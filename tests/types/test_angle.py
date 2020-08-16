@@ -1,14 +1,14 @@
 from pytest import approx
 from numpy import deg2rad
 
-from Bricks_py.source.types.Angle import Angle
-from Bricks_py.source.types.Angle import Quadrant
-from Bricks_py.source.types.Angle import _calc_quadrant
-from Bricks_py.source.types.Angle import _is_in_quadrant_I
-from Bricks_py.source.types.Angle import _is_in_quadrant_II
-from Bricks_py.source.types.Angle import _is_in_quadrant_III
-from Bricks_py.source.types.Angle import _is_in_quadrant_IV
-from Bricks_py.source.types.Angle import _calc_angle_if_out_of_rangle
+from Bricks_py.source.types.angle import Angle
+from Bricks_py.source.types.angle import Quadrant
+from Bricks_py.source.types.angle import _calc_quadrant
+from Bricks_py.source.types.angle import _is_in_quadrant_I
+from Bricks_py.source.types.angle import _is_in_quadrant_II
+from Bricks_py.source.types.angle import _is_in_quadrant_III
+from Bricks_py.source.types.angle import _is_in_quadrant_IV
+from Bricks_py.source.types.angle import _calc_angle_if_out_of_rangle
 
 
 class TestAngle:
