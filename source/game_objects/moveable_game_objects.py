@@ -1,5 +1,4 @@
 from Bricks_py.source.game_objects.game_object import GameObject
-from Bricks_py.source.types.angle import Angle
 from Bricks_py.source.types.point import Point
 
 
