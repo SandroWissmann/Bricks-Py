@@ -23,8 +23,7 @@ class GameObject:
 
     @top_left.setter
     def top_left(self, top_left: Point):
-        if top_left.x >= 0.0 and top_left.y >= 0.0:
-            self._top_left = top_left
+        self._top_left = top_left
 
     @property
     def bottom_right(self) -> Point:
