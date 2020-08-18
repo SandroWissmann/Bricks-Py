@@ -26,15 +26,13 @@ class TestGameObject:
         assert obj.width == 3.1
         assert obj.height == 4.2
 
-    def test_init_throws_ValueError(self):
+    @pytest.mark.parametrize(
+        "x, y, w, h",
+        [(-1, 0, 0, 0), (0, -1, 0, 0), (0, 0, -1, 0), (0, 0, 0, -1)],
+    )
+    def test_init_throws_ValueError(self, x, y, w, h):
         with pytest.raises(ValueError):
-            DerrivedGameObject(Point(-1, 0), 0, 0)
-        with pytest.raises(ValueError):
-            DerrivedGameObject(Point(0, -1), 0, 0)
-        with pytest.raises(ValueError):
-            DerrivedGameObject(Point(0, 0), -1, 0)
-        with pytest.raises(ValueError):
-            DerrivedGameObject(Point(0, 0), 0, -1)
+            DerrivedGameObject(top_left=Point(x, y), width=w, height=h)
 
     def test_top_left(self):
         obj = DerrivedGameObject(
