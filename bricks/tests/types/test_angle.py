@@ -44,6 +44,29 @@ class TestAngle:
         obj.quadrant = Quadrant.III
         assert obj.quadrant == Quadrant.III
 
+    @pytest.mark.parametrize(
+        "quadrant_before, quadrant_after, angle_before, angle_after",
+        [
+            (Quadrant.I, Quadrant.IV, 30.0, 330.0),
+            (Quadrant.II, Quadrant.III, 120.0, 240.0),
+            (Quadrant.III, Quadrant.II, 240.0, 120.0),
+            (Quadrant.IV, Quadrant.I, 330.0, 30),
+        ],
+    )
+    def test_mirror_horizontal(
+        self,
+        quadrant_before: Quadrant,
+        quadrant_after: Quadrant,
+        angle_before: float,
+        angle_after: float,
+    ):
+        obj = Angle(deg2rad(angle_before))
+        assert obj.quadrant == quadrant_before
+
+        obj.mirror_horizontal()
+        assert obj.quadrant == quadrant_after
+        assert obj.value == approx(deg2rad(angle_after))
+
 
 @pytest.mark.parametrize(
     "angle, quadrant",
