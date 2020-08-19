@@ -52,6 +52,17 @@ class Angle:
             self.quadrant = Quadrant.I
         self.quadrant_angle = _mirror_quadrant_angle(self.quadrant_angle)
 
+    def mirror_vertical(self):
+        if self.quadrant == Quadrant.I:
+            self.quadrant = Quadrant.II
+        elif self.quadrant == Quadrant.II:
+            self.quadrant = Quadrant.I
+        elif self.quadrant == Quadrant.III:
+            self.quadrant = Quadrant.IV
+        elif self.quadrant == Quadrant.IV:
+            self.quadrant = Quadrant.III
+        self.quadrant_angle = _mirror_quadrant_angle(self.quadrant_angle)
+
 
 def _clamp(minimum, x, maximum):
     return max(minimum, min(x, maximum))
