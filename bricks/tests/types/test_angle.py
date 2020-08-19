@@ -50,7 +50,7 @@ class TestAngle:
             (Quadrant.I, Quadrant.IV, 30.0, 330.0),
             (Quadrant.II, Quadrant.III, 120.0, 240.0),
             (Quadrant.III, Quadrant.II, 240.0, 120.0),
-            (Quadrant.IV, Quadrant.I, 330.0, 30),
+            (Quadrant.IV, Quadrant.I, 330.0, 30.0),
         ],
     )
     def test_mirror_horizontal(
