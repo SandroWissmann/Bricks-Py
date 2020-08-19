@@ -7,6 +7,7 @@ from bricks.source.types.angle import _is_in_quadrant_III
 from bricks.source.types.angle import _is_in_quadrant_IV
 from bricks.source.types.angle import _calc_angle_if_out_of_rangle
 
+import pytest
 from pytest import approx
 from numpy import deg2rad
 
@@ -44,110 +45,125 @@ class TestAngle:
         assert obj.quadrant == Quadrant.III
 
 
-def test_calc_quadrant_true():
-    assert _calc_quadrant(deg2rad(0.0)) == Quadrant.I
-    assert _calc_quadrant(deg2rad(45.0)) == Quadrant.I
-    assert _calc_quadrant(deg2rad(90.0)) == Quadrant.I
-    assert _calc_quadrant(deg2rad(90.1)) == Quadrant.II
-    assert _calc_quadrant(deg2rad(135.0)) == Quadrant.II
-    assert _calc_quadrant(deg2rad(180.0)) == Quadrant.II
-    assert _calc_quadrant(deg2rad(180.1)) == Quadrant.III
-    assert _calc_quadrant(deg2rad(225.0)) == Quadrant.III
-    assert _calc_quadrant(deg2rad(270.0)) == Quadrant.III
-    assert _calc_quadrant(deg2rad(270.1)) == Quadrant.IV
-    assert _calc_quadrant(deg2rad(315.0)) == Quadrant.IV
-    assert _calc_quadrant(deg2rad(360.0)) == Quadrant.IV
+@pytest.mark.parametrize(
+    "angle, quadrant",
+    [
+        (0.0, Quadrant.I),
+        (45.0, Quadrant.I),
+        (90.0, Quadrant.I),
+        (90.1, Quadrant.II),
+        (135.0, Quadrant.II),
+        (180.0, Quadrant.II),
+        (180.1, Quadrant.III),
+        (225.0, Quadrant.III),
+        (270.0, Quadrant.III),
+        (270.1, Quadrant.IV),
+        (315.0, Quadrant.IV),
+        (360.0, Quadrant.IV),
+    ],
+)
+def test_calc_quadrant_true(angle, quadrant):
+    assert _calc_quadrant(deg2rad(angle)) == quadrant
 
 
-def test_is_in_quarant_I_true():
-    assert _is_in_quadrant_I(deg2rad(0.0)) == True
-    assert _is_in_quadrant_I(deg2rad(45.0)) == True
-    assert _is_in_quadrant_I(deg2rad(90.0)) == True
+@pytest.mark.parametrize(
+    "angle, result",
+    [
+        (0.0, True),
+        (45.0, True),
+        (90.0, True),
+        (90.1, False),
+        (135.0, False),
+        (180.0, False),
+        (180.1, False),
+        (225.0, False),
+        (270.0, False),
+        (270.1, False),
+        (315.0, False),
+        (360.0, False),
+    ],
+)
+def test_is_in_quarant_I(angle: Angle, result: bool):
+    assert _is_in_quadrant_I(deg2rad(angle)) == result
 
 
-def test_is_in_quarant_I_false():
-    assert _is_in_quadrant_I(deg2rad(90.1)) == False
-    assert _is_in_quadrant_I(deg2rad(135.0)) == False
-    assert _is_in_quadrant_I(deg2rad(180.0)) == False
-    assert _is_in_quadrant_I(deg2rad(180.1)) == False
-    assert _is_in_quadrant_I(deg2rad(225.0)) == False
-    assert _is_in_quadrant_I(deg2rad(270.0)) == False
-    assert _is_in_quadrant_I(deg2rad(270.1)) == False
-    assert _is_in_quadrant_I(deg2rad(315.0)) == False
-    assert _is_in_quadrant_I(deg2rad(360.0)) == False
+@pytest.mark.parametrize(
+    "angle, result",
+    [
+        (0.0, False),
+        (45.0, False),
+        (90.0, False),
+        (90.1, True),
+        (135.0, True),
+        (180.0, True),
+        (180.1, False),
+        (225.0, False),
+        (270.0, False),
+        (270.1, False),
+        (315.0, False),
+        (360.0, False),
+    ],
+)
+def test_is_in_quarant_II(angle: Angle, result: bool):
+    assert _is_in_quadrant_II(deg2rad(angle)) == result
 
 
-def test_is_in_quarant_II_true():
-    assert _is_in_quadrant_II(deg2rad(90.1)) == True
-    assert _is_in_quadrant_II(deg2rad(135.0)) == True
-    assert _is_in_quadrant_II(deg2rad(180.0)) == True
+@pytest.mark.parametrize(
+    "angle, result",
+    [
+        (0.0, False),
+        (45.0, False),
+        (90.0, False),
+        (90.1, False),
+        (135.0, False),
+        (180.0, False),
+        (180.1, True),
+        (225.0, True),
+        (270.0, True),
+        (270.1, False),
+        (315.0, False),
+        (360.0, False),
+    ],
+)
+def test_is_in_quarant_III(angle: Angle, result: bool):
+    assert _is_in_quadrant_III(deg2rad(angle)) == result
 
 
-def test_is_in_quarant_II_false():
-    assert _is_in_quadrant_II(deg2rad(0.0)) == False
-    assert _is_in_quadrant_II(deg2rad(45.0)) == False
-    assert _is_in_quadrant_II(deg2rad(90.0)) == False
-    assert _is_in_quadrant_II(deg2rad(180.1)) == False
-    assert _is_in_quadrant_II(deg2rad(225.0)) == False
-    assert _is_in_quadrant_II(deg2rad(270.0)) == False
-    assert _is_in_quadrant_II(deg2rad(270.1)) == False
-    assert _is_in_quadrant_II(deg2rad(315.0)) == False
-    assert _is_in_quadrant_II(deg2rad(360.0)) == False
+@pytest.mark.parametrize(
+    "angle, result",
+    [
+        (0.0, False),
+        (45.0, False),
+        (90.0, False),
+        (90.1, False),
+        (135.0, False),
+        (180.0, False),
+        (180.1, False),
+        (225.0, False),
+        (270.0, False),
+        (270.1, True),
+        (315.0, True),
+        (360.0, True),
+    ],
+)
+def test_is_in_quarant_IV_true(angle: Angle, result: bool):
+    assert _is_in_quadrant_IV(deg2rad(angle)) == result
 
 
-def test_is_in_quarant_III_true():
-    assert _is_in_quadrant_III(deg2rad(180.1)) == True
-    assert _is_in_quadrant_III(deg2rad(225.0)) == True
-    assert _is_in_quadrant_III(deg2rad(270.0)) == True
-
-
-def test_is_in_quarant_III_false():
-    assert _is_in_quadrant_III(deg2rad(0.0)) == False
-    assert _is_in_quadrant_III(deg2rad(45.0)) == False
-    assert _is_in_quadrant_III(deg2rad(90.0)) == False
-    assert _is_in_quadrant_III(deg2rad(90.1)) == False
-    assert _is_in_quadrant_III(deg2rad(135.0)) == False
-    assert _is_in_quadrant_III(deg2rad(180.0)) == False
-    assert _is_in_quadrant_III(deg2rad(270.1)) == False
-    assert _is_in_quadrant_III(deg2rad(315.0)) == False
-    assert _is_in_quadrant_III(deg2rad(360.0)) == False
-
-
-def test_is_in_quarant_IV_true():
-    assert _is_in_quadrant_IV(deg2rad(270.1)) == True
-    assert _is_in_quadrant_IV(deg2rad(315.0)) == True
-    assert _is_in_quadrant_IV(deg2rad(360.0)) == True
-
-
-def test_is_in_quarant_IV_false():
-    assert _is_in_quadrant_IV(deg2rad(0.0)) == False
-    assert _is_in_quadrant_IV(deg2rad(45.0)) == False
-    assert _is_in_quadrant_IV(deg2rad(90.0)) == False
-    assert _is_in_quadrant_IV(deg2rad(90.1)) == False
-    assert _is_in_quadrant_IV(deg2rad(135.0)) == False
-    assert _is_in_quadrant_IV(deg2rad(180.0)) == False
-    assert _is_in_quadrant_IV(deg2rad(180.1)) == False
-    assert _is_in_quadrant_IV(deg2rad(225.0)) == False
-    assert _is_in_quadrant_IV(deg2rad(270.0)) == False
-
-
-def test_calc_angle_if_out_of_range():
-    assert _calc_angle_if_out_of_rangle(deg2rad(0.0)) == approx(deg2rad(0.0))
-    assert _calc_angle_if_out_of_rangle(deg2rad(360.0)) == approx(
-        deg2rad(360.0)
-    )
-    assert _calc_angle_if_out_of_rangle(deg2rad(360.1)) == approx(deg2rad(0.1))
-    assert _calc_angle_if_out_of_rangle(deg2rad(540.0)) == approx(
-        deg2rad(180.0)
-    )
-
-    assert _calc_angle_if_out_of_rangle(deg2rad(-0.1)) == approx(
-        deg2rad(359.9)
-    )
-    assert _calc_angle_if_out_of_rangle(deg2rad(-360.0)) == approx(
-        deg2rad(0.0)
-    )
-    assert _calc_angle_if_out_of_rangle(deg2rad(-540.0)) == approx(
-        deg2rad(180.0)
+@pytest.mark.parametrize(
+    "angle, result_angle",
+    [
+        (0.0, 0.0),
+        (360.0, 360.0),
+        (360.1, 0.1),
+        (540.0, 180.0),
+        (-0.1, 359.9),
+        (-360.0, 0.0),
+        (-540.0, 180.0),
+    ],
+)
+def test_calc_angle_if_out_of_range(angle, result_angle):
+    assert _calc_angle_if_out_of_rangle(deg2rad(angle)) == approx(
+        deg2rad(result_angle)
     )
 
