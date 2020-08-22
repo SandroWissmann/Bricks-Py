@@ -1,5 +1,5 @@
-from bricks.source.game_objects.moveable_game_objects import MoveableGameObject
-from bricks.source.types.point import Point
+from source.game_objects.moveable_game_objects import MoveableGameObject
+from source.types.point import Point
 
 
 class Platform(MoveableGameObject):

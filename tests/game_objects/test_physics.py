@@ -1,34 +1,26 @@
-from bricks.source.game_objects.ball import Ball
-from bricks.source.game_objects.brick import Brick
-from bricks.source.game_objects.platform import Platform
-from bricks.source.game_objects.game_object import GameObject
-from bricks.source.types.point import Point
-from bricks.source.types.angle import Angle, Quadrant
+from source.game_objects.ball import Ball
+from source.game_objects.brick import Brick
+from source.game_objects.platform import Platform
+from source.game_objects.game_object import GameObject
+from source.types.point import Point
+from source.types.angle import Angle, Quadrant
 
-from bricks.source.game_objects.physics import _calc_angle_factor
-from bricks.source.game_objects.physics import _clamp_angle
-from bricks.source.game_objects.physics import _intersects_with_right_x
-from bricks.source.game_objects.physics import _intersects_with_left_x
-from bricks.source.game_objects.physics import _intersects_with_bottom_y
-from bricks.source.game_objects.physics import _intersects_with_top_y
-from bricks.source.game_objects.physics import _is_inside_with_x
-from bricks.source.game_objects.physics import _is_inside_with_y
-from bricks.source.game_objects.physics import _not_through_with_right_x
-from bricks.source.game_objects.physics import _not_through_with_left_x
-from bricks.source.game_objects.physics import _not_through_with_top_y
-from bricks.source.game_objects.physics import _not_through_with_bottom_y
-from bricks.source.game_objects.physics import (
-    _put_before_intersects_with_right_x,
-)
-from bricks.source.game_objects.physics import (
-    _put_before_intersects_with_left_x,
-)
-from bricks.source.game_objects.physics import (
-    _put_before_intersects_with_top_y,
-)
-from bricks.source.game_objects.physics import (
-    _put_before_intersects_with_bottom_y,
-)
+from source.game_objects.physics import _calc_angle_factor
+from source.game_objects.physics import _clamp_angle
+from source.game_objects.physics import _intersects_with_right_x
+from source.game_objects.physics import _intersects_with_left_x
+from source.game_objects.physics import _intersects_with_bottom_y
+from source.game_objects.physics import _intersects_with_top_y
+from source.game_objects.physics import _is_inside_with_x
+from source.game_objects.physics import _is_inside_with_y
+from source.game_objects.physics import _not_through_with_right_x
+from source.game_objects.physics import _not_through_with_left_x
+from source.game_objects.physics import _not_through_with_top_y
+from source.game_objects.physics import _not_through_with_bottom_y
+from source.game_objects.physics import _put_before_intersects_with_right_x
+from source.game_objects.physics import _put_before_intersects_with_left_x
+from source.game_objects.physics import _put_before_intersects_with_top_y
+from source.game_objects.physics import _put_before_intersects_with_bottom_y
 
 from pytest import approx
 from numpy import deg2rad

@@ -1,5 +1,5 @@
-from bricks.source.level import Level
-from bricks.source.level import read_level_from_json_file
+from source.level import Level
+from source.level import read_level_from_json_file
 
 
 def main():

@@ -1,6 +1,6 @@
-from bricks.source.game_objects.ball import Ball
-from bricks.source.types.point import Point
-from bricks.source.types.angle import Angle
+from source.game_objects.ball import Ball
+from source.types.point import Point
+from source.types.angle import Angle
 
 from numpy import deg2rad
 

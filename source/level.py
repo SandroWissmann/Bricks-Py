@@ -1,12 +1,12 @@
-from bricks.source.game_objects.game_object import GameObject
-from bricks.source.game_objects.ball import Ball
-from bricks.source.game_objects.platform import Platform
-from bricks.source.game_objects.wall import Wall
-from bricks.source.game_objects.brick import Brick
-from bricks.source.game_objects.indestructible_brick import IndestructibleBrick
-from bricks.source.difficulty_parameter import DifficultyParameter
-from bricks.source.types.point import Point
-from bricks.source.types.angle import Angle
+from source.game_objects.game_object import GameObject
+from source.game_objects.ball import Ball
+from source.game_objects.platform import Platform
+from source.game_objects.wall import Wall
+from source.game_objects.brick import Brick
+from source.game_objects.indestructible_brick import IndestructibleBrick
+from source.difficulty_parameter import DifficultyParameter
+from source.types.point import Point
+from source.types.angle import Angle
 
 import json
 from numpy import deg2rad
@@ -82,24 +82,23 @@ class Level:
     def top_wall(self) -> Wall:
         return self._top_wall
 
-    @difficulty_parameter.setter
     def difficulty_parameter(self, difficulty_parameter: DifficultyParameter):
-        self._difficulyt_parameter = difficulty_parameter
+        self._difficulty_parameter = difficulty_parameter
         self.reset_ball()
         self.reset_platform()
 
     def reset_ball(self):
         self.ball = _make_ball(
-            self._difficulyt_parameter.ball_velocity,
-            self._difficulyt_parameter.ball_gravity,
+            self._difficulty_parameter.ball_velocity,
+            self._difficulty_parameter.ball_gravity,
             self._grid_width,
             self._grid_height,
         )
 
     def reset_platform(self):
         self.platform = _make_platform(
-            self._difficulyt_parameter.platform_width,
-            self._difficulyt_parameter.platform_velocity,
+            self._difficulty_parameter.platform_width,
+            self._difficulty_parameter.platform_velocity,
             self._grid_width,
             self._grid_height,
         )

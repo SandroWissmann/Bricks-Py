@@ -1,5 +1,5 @@
-from bricks.source.game_objects.game_object import GameObject
-from bricks.source.types.point import Point
+from source.game_objects.game_object import GameObject
+from source.types.point import Point
 
 import pytest
 

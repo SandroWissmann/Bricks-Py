@@ -1,4 +1,4 @@
-from bricks.source.types.point import Point
+from source.types.point import Point
 
 
 class GameObject:

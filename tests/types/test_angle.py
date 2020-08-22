@@ -1,11 +1,11 @@
-from bricks.source.types.angle import Angle
-from bricks.source.types.angle import Quadrant
-from bricks.source.types.angle import _calc_quadrant
-from bricks.source.types.angle import _is_in_quadrant_I
-from bricks.source.types.angle import _is_in_quadrant_II
-from bricks.source.types.angle import _is_in_quadrant_III
-from bricks.source.types.angle import _is_in_quadrant_IV
-from bricks.source.types.angle import _calc_angle_if_out_of_rangle
+from source.types.angle import Angle
+from source.types.angle import Quadrant
+from source.types.angle import _calc_quadrant
+from source.types.angle import _is_in_quadrant_I
+from source.types.angle import _is_in_quadrant_II
+from source.types.angle import _is_in_quadrant_III
+from source.types.angle import _is_in_quadrant_IV
+from source.types.angle import _calc_angle_if_out_of_rangle
 
 import pytest
 from pytest import approx
