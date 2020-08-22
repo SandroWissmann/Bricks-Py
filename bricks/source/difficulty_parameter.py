@@ -1,10 +1,10 @@
 class DifficultyParameter:
     def __init__(
         self,
-        platform_velocity: float,
-        platform_width: float,
-        ball_velocity: float,
-        ball_gravity: float,
+        platform_velocity: float = 16.0,
+        platform_width: float = 4.0,
+        ball_velocity: float = 16.0,
+        ball_gravity: float = 1.5,
     ):
         self.platform_velocity = platform_velocity
         self.platform_width = platform_width
