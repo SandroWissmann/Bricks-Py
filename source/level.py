@@ -20,7 +20,7 @@ BALL_ANGLE = deg2rad(135.0)
 
 
 class Level:
-    def __init_(
+    def __init__(
         self,
         difficulty_parameter: DifficultyParameter,
         grid_width: int,
@@ -113,29 +113,34 @@ def read_level_from_json_file(filename: str) -> Level:
                 grid_width: int = data["width"]
                 grid_height: int = data["height"]
 
-                bricks: List[Brick]
-                for brick_data in data["bricks"]:
-                    x: float = brick_data["top_left_x"]
-                    y: float = brick_data["top_left_y"]
-                    w: float = brick_data["width"]
-                    h: float = brick_data["height"]
-                    hp: int = brick_data["hitpoints"]
-                    brick = Brick(
-                        top_left=Point(x, y), width=w, height=h, hitpoints=hp
-                    )
-                    bricks.append(brick)
+                bricks: List[Brick] = []
+                if "bricks" in data:
+                    for brick_data in data["bricks"]:
+                        x: float = brick_data["top_left_x"]
+                        y: float = brick_data["top_left_y"]
+                        w: float = brick_data["width"]
+                        h: float = brick_data["height"]
+                        hp: int = brick_data["hitpoints"]
+                        brick = Brick(
+                            top_left=Point(x, y),
+                            width=w,
+                            height=h,
+                            hitpoints=hp,
+                        )
+                        bricks.append(brick)
 
-                ind_bricks: List[IndestructibleBrick]
-                for ind_brick_data in data["indestructible_bricks"]:
-                    x: float = ind_brick_data["top_left_x"]
-                    y: float = ind_brick_data["top_left_y"]
-                    w: float = ind_brick_data["width"]
-                    h: float = ind_brick_data["height"]
-                    hp: int = ind_brick_data["hitpoints"]
-                    ind_brick = IndestructibleBrick(
-                        top_left=Point(x, y), width=w, height=h
-                    )
-                    ind_bricks.append(ind_brick)
+                ind_bricks: List[IndestructibleBrick] = []
+                if "indestructible_bricks" in data:
+                    for ind_brick_data in data["indestructible_bricks"]:
+                        x: float = ind_brick_data["top_left_x"]
+                        y: float = ind_brick_data["top_left_y"]
+                        w: float = ind_brick_data["width"]
+                        h: float = ind_brick_data["height"]
+                        hp: int = ind_brick_data["hitpoints"]
+                        ind_brick = IndestructibleBrick(
+                            top_left=Point(x, y), width=w, height=h
+                        )
+                        ind_bricks.append(ind_brick)
 
                 return Level(
                     difficulty_parameter=DifficultyParameter(),
