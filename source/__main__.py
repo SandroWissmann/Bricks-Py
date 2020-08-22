@@ -3,7 +3,7 @@ from source.level import read_level_from_json_file
 
 
 def main():
-    level = read_level_from_json_file("../level/1.json")
+    level = read_level_from_json_file("level/1.json")
     print(level)
 
 
