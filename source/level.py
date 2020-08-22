@@ -154,7 +154,6 @@ def read_level_from_json_file(filename: str) -> Level:
                 print("File is not valid JSON (%s)" % error)
     except IOError as error:
         print("Couldn't open level file (%s)" % error)
-        return Level()
 
 
 def _make_left_wall(grid_width: int, grid_height: int) -> Wall:
