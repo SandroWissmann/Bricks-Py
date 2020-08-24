@@ -1,5 +1,5 @@
-from source.game_objects.indestructible_brick import IndestructibleBrick
-from source.types.point import Point
+from bricks.game_objects.indestructible_brick import IndestructibleBrick
+from bricks.types.point import Point
 
 
 class TestIndestructibleBrick:

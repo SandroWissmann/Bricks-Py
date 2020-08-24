@@ -1,5 +1,5 @@
-from source.game_objects.platform import Platform
-from source.types.point import Point
+from bricks.game_objects.platform import Platform
+from bricks.types.point import Point
 
 from pytest import approx
 import pytest

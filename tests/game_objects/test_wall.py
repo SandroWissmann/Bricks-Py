@@ -1,5 +1,5 @@
-from source.game_objects.wall import Wall
-from source.types.point import Point
+from bricks.game_objects.wall import Wall
+from bricks.types.point import Point
 
 
 class TestWall:
