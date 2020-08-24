@@ -1,12 +1,12 @@
-from source.game_objects.game_object import GameObject
-from source.game_objects.ball import Ball
-from source.game_objects.platform import Platform
-from source.game_objects.wall import Wall
-from source.game_objects.brick import Brick
-from source.game_objects.indestructible_brick import IndestructibleBrick
-from source.difficulty_parameter import DifficultyParameter
-from source.types.point import Point
-from source.types.angle import Angle
+from bricks.game_objects.game_object import GameObject
+from bricks.game_objects.ball import Ball
+from bricks.game_objects.platform import Platform
+from bricks.game_objects.wall import Wall
+from bricks.game_objects.brick import Brick
+from bricks.game_objects.indestructible_brick import IndestructibleBrick
+from bricks.difficulty_parameter import DifficultyParameter
+from bricks.types.point import Point
+from bricks.types.angle import Angle
 
 import json
 from numpy import deg2rad

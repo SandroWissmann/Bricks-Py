@@ -1,5 +1,5 @@
-from source.level import Level
-from source.level import read_level_from_json_file
+from bricks.level import Level
+from bricks.level import read_level_from_json_file
 
 import pygame
 

@@ -1,8 +1,8 @@
-from source.game_objects.ball import Ball
-from source.game_objects.platform import Platform
-from source.game_objects.game_object import GameObject
-from source.types.point import Point
-from source.types.angle import Angle, Quadrant
+from bricks.game_objects.ball import Ball
+from bricks.game_objects.platform import Platform
+from bricks.game_objects.game_object import GameObject
+from bricks.types.point import Point
+from bricks.types.angle import Angle, Quadrant
 
 from random import uniform
 from numpy import deg2rad

@@ -1,7 +1,7 @@
-from source.game_objects.moveable_game_objects import MoveableGameObject
-from source.types.angle import Angle
-from source.types.angle import Quadrant
-from source.types.point import Point
+from bricks.game_objects.moveable_game_objects import MoveableGameObject
+from bricks.types.angle import Angle
+from bricks.types.angle import Quadrant
+from bricks.types.point import Point
 
 from numpy import isclose
 from numpy import sin

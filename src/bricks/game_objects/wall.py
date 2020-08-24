@@ -1,5 +1,5 @@
-from source.game_objects.game_object import GameObject
-from source.types.point import Point
+from bricks.game_objects.game_object import GameObject
+from bricks.types.point import Point
 
 
 class Wall(GameObject):
