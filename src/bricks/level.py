@@ -221,4 +221,4 @@ def _platform_init_position(
 
 
 def _ball_init_position(grid_width: int, grid_height: int) -> Point:
-    return Point(x=grid_width / 2.0, y=grid_height / 2.0)
+    return Point(x=grid_width / 2.0, y=grid_height - 2.0)
