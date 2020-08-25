@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import Tuple
 
 
 class RGBColor:
@@ -24,14 +25,14 @@ class RGBColor:
     def a(self) -> int:
         return self._a
 
-    def lighter(self, factor: float):
+    def lighter(self, factor: float = 0.3):
         return RGBColor(
             r=calc_lighter_part(self._r, factor),
             g=calc_lighter_part(self._g, factor),
             b=calc_lighter_part(self._b, factor),
         )
 
-    def darker(self, factor: float):
+    def darker(self, factor: float = 0.3):
         return RGBColor(
             r=calc_darker_part(self._r, factor),
             g=calc_darker_part(self._g, factor),
@@ -42,6 +43,9 @@ class RGBColor:
         return RGBColor(
             r=self._r * 0.2126, g=self._g * 0.7152, b=self._b * 0.0722
         )
+
+    def as_tuple(self) -> Tuple[int, int, int, int]:
+        return self._r, self._g, self._b, self._a
 
 
 def _check_args(value: int) -> int:
