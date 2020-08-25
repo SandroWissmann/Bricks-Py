@@ -160,7 +160,7 @@ def _make_left_wall(grid_width: int, grid_height: int) -> Wall:
     return Wall(
         top_left=Point(x=0.0, y=0.0),
         width=WALL_THICKNESS,
-        height=grid_width + WALL_THICKNESS,
+        height=grid_height + WALL_THICKNESS,
     )
 
 
@@ -168,7 +168,7 @@ def _make_right_wall(grid_width: int, grid_height: int) -> Wall:
     return Wall(
         top_left=Point(x=grid_width + WALL_THICKNESS, y=0.0),
         width=WALL_THICKNESS,
-        height=grid_width + WALL_THICKNESS,
+        height=grid_height + WALL_THICKNESS,
     )
 
 
