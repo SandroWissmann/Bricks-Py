@@ -1,0 +1,138 @@
+from bricks.level import Level
+from bricks.game_objects.ball import Ball
+from bricks.game_objects.platform import Platform
+from bricks.game_objects.wall import Wall
+from bricks.game_objects.physics import (
+    _intersects_with_left_x,
+    _intersects_with_right_x,
+    _put_before_intersects_with_left_x,
+    _put_before_intersects_with_right_x,
+)
+
+from enum import Enum
+
+import pygame
+from pygame.event import (
+    NOEVENT,
+    QUIT,
+    KEYDOWN,
+    K_LEFT,
+    K_RIGHT,
+    K_SPACE,
+    K_ESCAPE,
+    K_p,
+)
+
+
+class InputHandler:
+    class _Event(Enum):
+        none = 0
+        quit = 1
+        left = 2
+        right = 3
+        space = 4
+        escape = 5
+        p = 6
+
+    def __init__(self):
+        self._is_paused = False
+        self._changed_pause_state = False
+        self._is_quit = False
+
+    @property
+    def is_paused(self):
+        return self._is_paused
+
+    @property
+    def changed_pause_state(self):
+        return self.changed_pause_state
+
+    @property
+    def is_quit(self):
+        return self._is_quit
+
+    def handle_input(self, level: Level, elapsed_time_in_ms: float):
+        event = self._get_event()
+        self._handle_event(event, elapsed_time_in_ms, level)
+
+    def _get_event(self) -> _Event:
+
+        while True:
+            poll_event = pygame.event.poll()
+            if poll_event == NOEVENT:
+                break
+            if poll_event.type == QUIT:
+                return self._Event.none
+            if poll_event.type == KEYDOWN:
+                if poll_event.key == K_p:
+                    return self._Event.p
+
+        keys = pygame.key.get_pressed()
+        if keys[K_LEFT]:
+            return self._Event.left
+        if keys[K_RIGHT]:
+            return self._Event.right
+        if keys[K_SPACE]:
+            return self._Event.space
+        if keys[K_ESCAPE]:
+            return self._Event.escape
+        return self._Event.none
+
+    def _handle_event(
+        self, event: _Event, elapsed_time_in_ms: float, level: Level
+    ):
+        self._handle_event_from_level_objects(
+            event,
+            elapsed_time_in_ms,
+            level.left_wall,
+            level.right_wall,
+            level.ball,
+            level.platform,
+        )
+
+    def _handle_event_from_level_objects(
+        self,
+        event: _Event,
+        elapsed_time_in_ms: int,
+        left_wall: Wall,
+        right_wall: Wall,
+        ball: Ball,
+        platform: Platform,
+    ):
+        if event == self._Event.p:
+            self._is_paused = not self._is_paused
+            self._changed_pause_state = True
+            return
+        self._changed_pause_state = False
+
+        if event == self._Event.quit or event == self._Event.escape:
+            self._is_quit = True
+            return
+        if event == self._Event.p:
+            self._is_paused = not self._is_paused
+            return
+
+        if self._is_paused:
+            return
+
+        if event == self._Event.space:
+            if not ball.is_active:
+                ball.is_active = True
+        elif event == self._Event.left:
+            if _intersects_with_left_x(platform, left_wall):
+                _put_before_intersects_with_left_x(platform, left_wall)
+        elif event == self._Event.right:
+            if _intersects_with_right_x(platform, right_wall):
+                _put_before_intersects_with_right_x(platform, right_wall)
+
+
+def _move_left(platform: Platform, elapsed_time_in_ms: float):
+    if platform.velocity > 0:
+        platform.velocity *= -1
+    platform.move(elapsed_time_in_ms)
+
+
+def _move_right(platform: Platform, elapsed_time_in_ms: float):
+    if platform.velocity < 0:
+        platform.velocity *= -1
+    platform.move(elapsed_time_in_ms)
