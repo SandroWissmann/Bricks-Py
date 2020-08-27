@@ -66,7 +66,7 @@ class Renderer:
         self.update_screen()
 
     def set_window_title(self, title: str):
-        pygame.display.set_caption("title")
+        pygame.display.set_caption(title)
 
     def _clear_screen(self):
         white = RGBColor(0x1E, 0x1E, 0x1E)
