@@ -107,19 +107,18 @@ class Game:
                 self._score = 0
                 self._difficulty_parameters = DifficultyParameters()
             elif self._all_levels_finished():
-                play_win_game(self._is_game_over)
+                play_win_game(self._audio_device)
                 self._current_level_idx = 1
                 self._difficulty_parameters = _increase_difficulty(
                     self._difficulty_parameters
                 )
             else:
-                play_next_level(self._is_game_over)
+                play_next_level(self._audio_device)
                 self._current_level_idx += 1
             self._level = _load_level(
                 self._level_filenames, self._current_level_idx
             )
             self._level.difficulty_parameters = self._difficulty_parameters
-
             self._update_values_in_title_bar()
 
     def _run_level(self):
@@ -147,8 +146,8 @@ class Game:
                     play_lost_ball(self._audio_device)
 
                     self._update_values_in_title_bar()
-                    self._level.resetBall()
-                    self._level.resetPlatform()
+                    self._level.reset_ball()
+                    self._level.reset_platform()
 
                 self._handle_ball_collisions()
                 if _all_bricks_are_destroyed(self._level.bricks):
