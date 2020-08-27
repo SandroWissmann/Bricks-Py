@@ -4,7 +4,7 @@ from bricks.game_objects.platform import Platform
 from bricks.game_objects.wall import Wall
 from bricks.game_objects.brick import Brick
 from bricks.game_objects.indestructible_brick import IndestructibleBrick
-from bricks.difficulty_parameter import DifficultyParameter
+from bricks.difficulty_parameters import DifficultyParameters
 from bricks.types.point import Point
 from bricks.types.angle import Angle
 
@@ -22,7 +22,7 @@ BALL_ANGLE = deg2rad(135.0)
 class Level:
     def __init__(
         self,
-        difficulty_parameter: DifficultyParameter,
+        difficulty_parameters: DifficultyParameters,
         grid_width: int,
         grid_height: int,
         bricks: List[Brick],
@@ -31,21 +31,21 @@ class Level:
         assert grid_width > 0
         assert grid_height > 0
 
-        self._difficulty_parameter = difficulty_parameter
+        self._difficulty_parameters = difficulty_parameters
         self._grid_width = grid_width
         self._grid_height = grid_height
         self._left_wall = _make_left_wall(grid_width, grid_height)
         self._right_wall = _make_right_wall(grid_width, grid_height)
         self._top_wall = _make_top_wall(grid_width)
         self.platform = _make_platform(
-            difficulty_parameter.platform_width,
-            difficulty_parameter.platform_velocity,
+            difficulty_parameters.platform_width,
+            difficulty_parameters.platform_velocity,
             grid_width,
             grid_height,
         )
         self.ball = _make_ball(
-            difficulty_parameter.ball_velocity,
-            difficulty_parameter.ball_gravity,
+            difficulty_parameters.ball_velocity,
+            difficulty_parameters.ball_gravity,
             grid_width,
             grid_height,
         )
@@ -82,24 +82,24 @@ class Level:
     def top_wall(self) -> Wall:
         return self._top_wall
 
-    @difficulty_parameter.setter
-    def difficulty_parameter(self, difficulty_parameter: DifficultyParameter):
-        self._difficulty_parameter = difficulty_parameter
+    @difficulty_parameters.setter
+    def difficulty_parameter(self, difficulty_parameters: DifficultyParameter):
+        self._difficulty_parameters = difficulty_parameter
         self.reset_ball()
         self.reset_platform()
 
     def reset_ball(self):
         self.ball = _make_ball(
-            self._difficulty_parameter.ball_velocity,
-            self._difficulty_parameter.ball_gravity,
+            self._difficulty_parameters.ball_velocity,
+            self._difficulty_parameters.ball_gravity,
             self._grid_width,
             self._grid_height,
         )
 
     def reset_platform(self):
         self.platform = _make_platform(
-            self._difficulty_parameter.platform_width,
-            self._difficulty_parameter.platform_velocity,
+            self._difficulty_parameters.platform_width,
+            self._difficulty_parameters.platform_velocity,
             self._grid_width,
             self._grid_height,
         )

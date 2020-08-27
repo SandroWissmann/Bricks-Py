@@ -1,4 +1,4 @@
-class DifficultyParameter:
+class DifficultyParameters:
     def __init__(
         self,
         platform_velocity: float = 16.0,
