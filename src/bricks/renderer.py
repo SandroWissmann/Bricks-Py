@@ -65,6 +65,9 @@ class Renderer:
             self._render_indestructible_brick(indestructible_brick)
         self.update_screen()
 
+    def set_window_title(self, title: str):
+        pygame.display.set_caption("title")
+
     def _clear_screen(self):
         white = RGBColor(0x1E, 0x1E, 0x1E)
         if not self._is_paused:
