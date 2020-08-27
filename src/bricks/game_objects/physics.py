@@ -96,7 +96,7 @@ def _reflect_horizontal_II_to_III(ball: Ball, platform: Platform):
     x_righ = platform.bottom_right.x
     x_left = platform.top_left.x
     x_center = x_left + (platform.width / 2.0)
-    x_ball = ball.top_Left.x
+    x_ball = ball.top_left.x
 
     factor = _calc_angle_factor(x_ball, x_left, x_center, x_righ)
     new_quad_angle = deg2rad(30.0) + (deg2rad(45.0) - (deg2rad(45.0) * factor))
