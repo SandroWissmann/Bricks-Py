@@ -82,6 +82,7 @@ class Level:
     def top_wall(self) -> Wall:
         return self._top_wall
 
+    @difficulty_parameter.setter
     def difficulty_parameter(self, difficulty_parameter: DifficultyParameter):
         self._difficulty_parameter = difficulty_parameter
         self.reset_ball()
