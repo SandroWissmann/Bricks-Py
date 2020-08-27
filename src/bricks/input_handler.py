@@ -21,6 +21,7 @@ from pygame.constants import (
     NOEVENT,
     QUIT,
     KEYDOWN,
+    KEYUP,
 )
 
 
@@ -38,6 +39,7 @@ class InputHandler:
         self._is_paused = False
         self._changed_pause_state = False
         self._is_quit = False
+        self._input_event = self._Event.none
 
     @property
     def is_paused(self):
@@ -52,31 +54,77 @@ class InputHandler:
         return self._is_quit
 
     def handle_input(self, level: Level, elapsed_time_in_ms: float):
-        event = self._get_event()
-        self._handle_event(event, elapsed_time_in_ms, level)
+        self._update_input_event()
+        self._handle_event(self._input_event, elapsed_time_in_ms, level)
 
-    def _get_event(self) -> _Event:
+    def _update_input_event(self):
+        events = pygame.event.get()
+        for event in events:
+            if event.type == QUIT:
+                self._input_event = self._Event.quit
+            if event.type == KEYUP:
+                print("KEYUP")
+                self._input_event = self._Event.none
+            if event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    self._input_event = self._Event.space
+                if event.key == K_ESCAPE:
+                    self._input_event = self._Event.escape
+                if event.key == K_LEFT:
+                    self._input_event = self._Event.left
+                if event.key == K_RIGHT:
+                    self._input_event = self._Event.right
 
-        while True:
-            poll_event = pygame.event.poll()
-            if poll_event == NOEVENT:
-                break
-            if poll_event.type == QUIT:
-                return self._Event.none
-            if poll_event.type == KEYDOWN:
-                if poll_event.key == K_p:
-                    return self._Event.p
+        # pressed = pygame.key.get_pressed()
+        # if pressed[K_LEFT]:
+        #     return self._Event.left
+        # if pressed[K_RIGHT]:
+        #     return self._Event.left
+        # if pressed[K_SPACE]:
+        #     return self._Event.space
+        # if pressed[K_ESCAPE]:
+        #     return self._Event.space
 
-        keys = pygame.key.get_pressed()
-        if keys[K_LEFT]:
-            return self._Event.left
-        if keys[K_RIGHT]:
-            return self._Event.right
-        if keys[K_SPACE]:
-            return self._Event.space
-        if keys[K_ESCAPE]:
-            return self._Event.escape
-        return self._Event.none
+        # while True:
+        #     poll_event = pygame.event.poll()
+        #     if poll_event == NOEVENT:
+        #         print("NOEVENT")
+        #         break
+        #     if poll_event.type == QUIT:
+        #         print("QUIT")
+        #         return self._Event.quit
+        #     if poll_event.type == KEYDOWN:
+        #         print("KEYDOWN")
+        #         if poll_event.key == K_p:
+        #             print("P")
+        #             return self._Event.p
+        #         if poll_event.key == K_LEFT:
+        #             print("K_LEFT")
+        #             return self._Event.left
+        #         if poll_event.key == K_RIGHT:
+        #             print("K_RIGHT")
+        #             return self._Event.right
+        #         if poll_event.key == K_SPACE:
+        #             print("K_SPACE")
+        #             return self._Event.space
+        #         if poll_event.key == K_ESCAPE:
+        #             print("K_ESCAPE")
+        #             return self._Event.escape
+
+        # keys = pygame.key.get_pressed()
+        # if keys[K_LEFT]:
+        #     print("K_LEFT")
+        #     return self._Event.left
+        # if keys[K_RIGHT]:
+        #     print("K_RIGHT")
+        #     return self._Event.right
+        # if keys[K_SPACE]:
+        #     print("K_SPACE")
+        #     return self._Event.space
+        # if keys[K_ESCAPE]:
+        #     print("K_ESCAPE")
+        #     return self._Event.escape
+        # return self._Event.none
 
     def _handle_event(
         self, event: _Event, elapsed_time_in_ms: float, level: Level
@@ -121,9 +169,13 @@ class InputHandler:
         elif event == self._Event.left:
             if _intersects_with_left_x(platform, left_wall):
                 _put_before_intersects_with_left_x(platform, left_wall)
+            else:
+                _move_left(platform, elapsed_time_in_ms)
         elif event == self._Event.right:
             if _intersects_with_right_x(platform, right_wall):
                 _put_before_intersects_with_right_x(platform, right_wall)
+            else:
+                _move_right(platform, elapsed_time_in_ms)
 
 
 def _move_left(platform: Platform, elapsed_time_in_ms: float):
