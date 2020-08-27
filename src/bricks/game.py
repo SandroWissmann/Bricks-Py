@@ -32,11 +32,11 @@ from bricks.renderer import Renderer
 from bricks.input_handler import InputHandler
 from bricks.difficulty_parameters import DifficultyParameters
 
-from os import listdir
 from typing import List
 from time import sleep
 
 import json
+import pathlib
 from time import time
 
 FRAMES_PER_SECOND = 60
@@ -129,7 +129,7 @@ class Game:
             self._renderer.render(self._level)
 
             self._input_handler.handle_input(self._level, MS_PER_FRAME)
-            if self._input_handler.changed_pause_state():
+            if self._input_handler.changed_pause_state:
                 self._renderer.is_paused = self._input_handler.is_paused
             if self._input_handler.is_quit:
                 return
@@ -244,7 +244,7 @@ def _load_highscore() -> int:
             except ValueError as error:
                 print("File has no highscore JSON entry (%s)" % error)
     except IOError as error:
-        print("Couldn't open highscore file (%s)" % error)
+        return 0
 
 
 def _save_highscore(highscore: int):
@@ -280,8 +280,10 @@ def _load_level(level_filenames: List[str], level_idx: int) -> Level:
 
 
 def _get_level_filenames_from_folder(folder_name: str) -> List[str]:
-    files = listdir(folder_name)
-    return [file for file in files if files.endswith(".json")]
+    filenames = []
+    for filepath in pathlib.Path(folder_name).glob("**/*.json"):
+        filenames.append(filepath.absolute())
+    return filenames
 
 
 def _clamp(minimum, x, maximum):
