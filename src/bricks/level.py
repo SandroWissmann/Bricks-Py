@@ -82,9 +82,10 @@ class Level:
     def top_wall(self) -> Wall:
         return self._top_wall
 
-    @difficulty_parameters.setter
-    def difficulty_parameter(self, difficulty_parameters: DifficultyParameter):
-        self._difficulty_parameters = difficulty_parameter
+    def difficulty_parameter(
+        self, difficulty_parameters: DifficultyParameters
+    ):
+        self._difficulty_parameters = difficulty_parameters
         self.reset_ball()
         self.reset_platform()
 
@@ -144,7 +145,7 @@ def read_level_from_json_file(filename: str) -> Level:
                         ind_bricks.append(ind_brick)
 
                 return Level(
-                    difficulty_parameter=DifficultyParameter(),
+                    difficulty_parameters=DifficultyParameters(),
                     grid_width=grid_width,
                     grid_height=grid_height,
                     bricks=bricks,
