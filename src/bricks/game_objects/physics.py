@@ -61,7 +61,7 @@ def _reflect_horizontal_I_to_IV(ball: Ball, platform: Platform):
     new_quad_angle = deg2rad(60.0) - (deg2rad(45.0) - deg2rad(45.0) * factor)
     assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
 
-    ball.angle.mirror_horizontal
+    ball.angle.mirror_horizontal()
     ball.angle.quadrant_angle = new_quad_angle
 
 
@@ -102,7 +102,7 @@ def _reflect_horizontal_II_to_III(ball: Ball, platform: Platform):
     new_quad_angle = deg2rad(30.0) + (deg2rad(45.0) - (deg2rad(45.0) * factor))
     assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
 
-    ball.angle.mirror_horizontal
+    ball.angle.mirror_horizontal()
     ball.angle.quadrant_angle = new_quad_angle
 
 
@@ -146,7 +146,7 @@ def _reflect_horizontal_from_quadrant_I(ball: Ball, obj: GameObject) -> bool:
     else:
         return False
     _put_before_intersects_with_bottom_y(ball, obj)
-    ball.setAngle(_clamp_angle(ball.angle()))
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
@@ -164,7 +164,7 @@ def _reflect_vertical_from_quadrant_(ball: Ball, obj: GameObject) -> bool:
     else:
         return False
     _put_before_intersects_with_right_x(ball, obj)
-    ball.setAngle(_clamp_angle(ball.angle()))
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
@@ -190,7 +190,7 @@ def _reflect_horizontal_from_quadrant_II(ball: Ball, obj: GameObject) -> bool:
     else:
         return False
     _put_before_intersects_with_bottom_y(ball, obj)
-    ball.setAngle(_clamp_angle(ball.angle()))
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
@@ -208,7 +208,7 @@ def _reflect_vertical_from_quadrant_I(ball: Ball, obj: GameObject) -> bool:
     else:
         return False
     _put_before_intersects_with_left_x(ball, obj)
-    ball.setAngle(_clamp_angle(ball.angle()))
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
@@ -234,7 +234,7 @@ def _reflect_horizontal_from_quadrant_III(ball: Ball, obj: GameObject) -> bool:
     else:
         return False
     _put_before_intersects_with_top_y(ball, obj)
-    ball.setAngle(_clamp_angle(ball.angle()))
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
@@ -252,7 +252,7 @@ def _reflect_vertical_from_quadrant_II(ball: Ball, obj: GameObject) -> bool:
     else:
         return False
     _put_before_intersects_with_left_x(ball, obj)
-    ball.setAngle(_clamp_angle(ball.angle()))
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
@@ -278,7 +278,7 @@ def _reflect_horizontal_from_quadrant_IV(ball: Ball, obj: GameObject) -> bool:
     else:
         return False
     _put_before_intersects_with_top_y(ball, obj)
-    ball.setAngle(_clamp_angle(ball.angle()))
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
@@ -296,7 +296,7 @@ def _reflect_vertical_from_quadrant_V(ball: Ball, obj: GameObject) -> bool:
     else:
         return False
     _put_before_intersects_with_right_x(ball, obj)
-    ball.setAngle(_clamp_angle(ball.angle()))
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
