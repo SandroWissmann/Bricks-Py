@@ -12,15 +12,15 @@ from bricks.game_objects.physics import (
 from enum import Enum
 
 import pygame
-from pygame.event import (
-    NOEVENT,
-    QUIT,
-    KEYDOWN,
+from pygame.constants import (
     K_LEFT,
     K_RIGHT,
     K_SPACE,
     K_ESCAPE,
     K_p,
+    NOEVENT,
+    QUIT,
+    KEYDOWN,
 )
 
 
@@ -45,7 +45,7 @@ class InputHandler:
 
     @property
     def changed_pause_state(self):
-        return self.changed_pause_state
+        return self._changed_pause_state
 
     @property
     def is_quit(self):
