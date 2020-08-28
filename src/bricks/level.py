@@ -52,8 +52,8 @@ class Level:
         self.bricks = bricks
         self.indestructible_bricks = indestructible_bricks
 
-        self._grid_width += 2 * WALL_THICKNESS
-        self._grid_height += WALL_THICKNESS
+        self._grid_width += int(2 * WALL_THICKNESS)
+        self._grid_height += int(WALL_THICKNESS)
 
         _transpose_coordinates_with_walls(self.platform)
         _transpose_coordinates_with_walls(self.ball)
