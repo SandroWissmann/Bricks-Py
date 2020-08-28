@@ -141,7 +141,7 @@ class InputHandler:
     def _handle_event_from_level_objects(
         self,
         event: _Event,
-        elapsed_time_in_ms: int,
+        elapsed_time_in_ms: float,
         left_wall: Wall,
         right_wall: Wall,
         ball: Ball,
