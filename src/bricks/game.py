@@ -66,7 +66,7 @@ class Game:
         self._input_handler = InputHandler()
         self._level_filenames = _get_level_filenames_from_folder("level")
         self._level = _load_level(self._level_filenames, 1)
-        self._difficulty_parameters = DifficultyParameters
+        self._difficulty_parameters = DifficultyParameters()
         self._renderer = Renderer(
             screen_width=screen_width,
             screen_height=screen_height,
@@ -213,27 +213,25 @@ def _increase_difficulty(
 
     dp = difficulty_paramters
 
-    platform_velocity = dp.platform_velocity
     dp.platform_velocity = _clamp(
-        platform_velocity,
-        platform_velocity + PLATFORM_VELOCITY_INCREASE,
+        dp.platform_velocity,
+        dp.platform_velocity + PLATFORM_VELOCITY_INCREASE,
         PLATFORM_VELOCITY_MAX,
     )
-    platform_width = dp.platform_width
     dp.platform_width = _clamp(
         PLATFORM_WIDTH_MIN,
-        platform_width - PLATFORM_WIDTH_DECREASE,
-        platform_width,
+        dp.platform_width - PLATFORM_WIDTH_DECREASE,
+        dp.platform_width,
     )
-    ball_velocity = dp.platform_velocity
     dp.ball_velocity = _clamp(
-        ball_velocity,
-        ball_velocity + BALL_VELOCITY_INCREASE,
+        dp.ball_velocity,
+        dp.ball_velocity + BALL_VELOCITY_INCREASE,
         BALL_VELOCITY_MAX,
     )
-    ball_gravity = dp.ball_gravity
     dp.ball_gravity = _clamp(
-        ball_gravity, ball_gravity + BALL_GRAVITY_INCREASE, BALL_GRAVITY_MAX,
+        dp.ball_gravity,
+        dp.ball_gravity + BALL_GRAVITY_INCREASE,
+        BALL_GRAVITY_MAX,
     )
     return dp
 
