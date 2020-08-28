@@ -11,6 +11,7 @@ from bricks.types.angle import Angle
 import json
 from numpy import deg2rad
 from typing import List
+from typing import Union
 
 WALL_THICKNESS = 1.0
 PLATFORM_HEIGHT = 0.5
@@ -106,7 +107,7 @@ class Level:
         )
 
 
-def read_level_from_json_file(filename: str) -> Level:
+def read_level_from_json_file(filename: str) -> Union[Level, None]:
     try:
         with open(filename) as file:
             try:
@@ -154,8 +155,10 @@ def read_level_from_json_file(filename: str) -> Level:
 
             except ValueError as error:
                 print("File is not valid JSON (%s)" % error)
+                return None
     except IOError as error:
         print("Couldn't open level file (%s)" % error)
+        return None
 
 
 def _make_left_wall(grid_width: int, grid_height: int) -> Wall:
