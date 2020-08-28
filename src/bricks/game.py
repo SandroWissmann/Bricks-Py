@@ -97,7 +97,7 @@ class Game:
             if self._input_handler.is_quit:
                 return
             if self._is_game_over:
-                play_game_over(self._is_game_over)
+                play_game_over(self._audio_device)
                 if self._score > self._highscore:
                     self._highscore = self._score
                     _save_highscore(self._highscore)
@@ -141,7 +141,7 @@ class Game:
                 if self._ball_is_lost():
                     self._lifes -= 1
                     if self._lifes <= 0:
-                        self._game_over = True
+                        self._is_game_over = True
                         return
                     play_lost_ball(self._audio_device)
 
