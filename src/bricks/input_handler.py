@@ -58,9 +58,9 @@ class InputHandler:
         self._handle_event(self._input_event, elapsed_time_in_ms, level)
 
     def _update_input_event(self):
-        events = pygame.event.get()
         if self._input_event == self._Event.p:
             self._input_event = self._Event.none
+        events = pygame.event.get()
         for event in events:
             if event.type == QUIT:
                 self._input_event = self._Event.quit
