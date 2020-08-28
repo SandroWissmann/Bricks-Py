@@ -242,6 +242,7 @@ def _load_highscore() -> int:
                 return data["highscore"]
             except ValueError as error:
                 print("File has no highscore JSON entry (%s)" % error)
+                return 0
     except IOError as error:
         return 0
 
