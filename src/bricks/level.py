@@ -84,7 +84,7 @@ class Level:
     def top_wall(self) -> Wall:
         return self._top_wall
 
-    def difficulty_parameter(
+    def difficulty_parameters(
         self, difficulty_parameters: DifficultyParameters
     ):
         self._difficulty_parameters = difficulty_parameters
