@@ -213,25 +213,27 @@ def _increase_difficulty(
 
     dp = difficulty_paramters
 
-    print(dp.platform_velocity)
-
+    platform_velocity = dp.platform_velocity
     dp.platform_velocity = _clamp(
-        dp.platform_velocity,
-        dp.platform_velocity + PLATFORM_VELOCITY_INCREASE,
+        platform_velocity,
+        platform_velocity + PLATFORM_VELOCITY_INCREASE,
         PLATFORM_VELOCITY_MAX,
     )
+    platform_width = dp.platform_width
     dp.platform_width = _clamp(
-        PLATFORM_WIDTH_MIN, dp.platform_width - PLATFORM_WIDTH_DECREASE, dp,
+        PLATFORM_WIDTH_MIN,
+        platform_width - PLATFORM_WIDTH_DECREASE,
+        platform_width,
     )
+    ball_velocity = dp.platform_velocity
     dp.ball_velocity = _clamp(
-        dp.ball_velocity,
-        dp.ball_velocity + BALL_VELOCITY_INCREASE,
+        ball_velocity,
+        ball_velocity + BALL_VELOCITY_INCREASE,
         BALL_VELOCITY_MAX,
     )
+    ball_gravity = dp.ball_gravity
     dp.ball_gravity = _clamp(
-        dp.ball_gravity,
-        dp.ball_gravity + BALL_GRAVITY_INCREASE,
-        BALL_GRAVITY_MAX,
+        ball_gravity, ball_gravity + BALL_GRAVITY_INCREASE, BALL_GRAVITY_MAX,
     )
     return dp
 
