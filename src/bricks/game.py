@@ -65,7 +65,7 @@ class Game:
         self._audio_device = AudioDevice()
         self._input_handler = InputHandler()
         self._level_filenames = _get_level_filenames_from_folder("level")
-        self._level = _load_level(self._level_filenames, 1)
+        self._level = _load_level(self._level_filenames, 4)
         self._difficulty_parameters = DifficultyParameters
         self._renderer = Renderer(
             screen_width=screen_width,
@@ -183,7 +183,7 @@ class Game:
             if reflect(self._level.ball, brick):
                 brick.decrease_hitpoints()
 
-                if brick.is_destroyed:
+                if brick.is_destroyed():
                     play_destroy_brick(self._audio_device)
                     self._score += self._get_brick_score(brick)
                     self._award_extra_life_it_threshold_reached()
