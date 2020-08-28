@@ -11,6 +11,7 @@ from bricks.types.angle import Angle
 import json
 from numpy import deg2rad
 from typing import List
+from typing import Dict
 from typing import Union
 
 WALL_THICKNESS = 1.0
@@ -116,34 +117,11 @@ def read_level_from_json_file(filename: str) -> Union[Level, None]:
                 grid_width: int = data["width"]
                 grid_height: int = data["height"]
 
-                bricks: List[Brick] = []
-                if "bricks" in data:
-                    for brick_data in data["bricks"]:
-                        x: float = brick_data["top_left_x"]
-                        y: float = brick_data["top_left_y"]
-                        w: float = brick_data["width"]
-                        h: float = brick_data["height"]
-                        hp: int = brick_data["hitpoints"]
-                        brick = Brick(
-                            top_left=Point(x, y),
-                            width=w,
-                            height=h,
-                            hitpoints=hp,
-                        )
-                        bricks.append(brick)
+                bricks: List[Brick] = _read_bricks_from_json_data(data)
 
-                ind_bricks: List[IndestructibleBrick] = []
-                if "indestructible_bricks" in data:
-                    for ind_brick_data in data["indestructible_bricks"]:
-                        x: float = ind_brick_data["top_left_x"]
-                        y: float = ind_brick_data["top_left_y"]
-                        w: float = ind_brick_data["width"]
-                        h: float = ind_brick_data["height"]
-                        hp: int = ind_brick_data["hitpoints"]
-                        ind_brick = IndestructibleBrick(
-                            top_left=Point(x, y), width=w, height=h
-                        )
-                        ind_bricks.append(ind_brick)
+                ind_bricks: List[
+                    IndestructibleBrick
+                ] = _read_indestructible_bricks_from_json_data(data)
 
                 return Level(
                     difficulty_parameters=DifficultyParameters(),
@@ -159,6 +137,40 @@ def read_level_from_json_file(filename: str) -> Union[Level, None]:
     except IOError as error:
         print("Couldn't open level file (%s)" % error)
         return None
+
+
+def _read_bricks_from_json_data(data: Dict) -> List[Brick]:
+    bricks: List[Brick] = []
+    if "bricks" in data:
+        for brick_data in data["bricks"]:
+            x: float = brick_data["top_left_x"]
+            y: float = brick_data["top_left_y"]
+            w: float = brick_data["width"]
+            h: float = brick_data["height"]
+            hp: int = brick_data["hitpoints"]
+            brick = Brick(
+                top_left=Point(x, y), width=w, height=h, hitpoints=hp,
+            )
+            bricks.append(brick)
+    return bricks
+
+
+def _read_indestructible_bricks_from_json_data(
+    data: Dict,
+) -> List[IndestructibleBrick]:
+    ind_bricks: List[IndestructibleBrick] = []
+    if "indestructible_bricks" in data:
+        for ind_brick_data in data["indestructible_bricks"]:
+            x: float = ind_brick_data["top_left_x"]
+            y: float = ind_brick_data["top_left_y"]
+            w: float = ind_brick_data["width"]
+            h: float = ind_brick_data["height"]
+            hp: int = ind_brick_data["hitpoints"]
+            ind_brick = IndestructibleBrick(
+                top_left=Point(x, y), width=w, height=h
+            )
+            ind_bricks.append(ind_brick)
+    return ind_bricks
 
 
 def _make_left_wall(grid_width: int, grid_height: int) -> Wall:
