@@ -1,0 +1,238 @@
+{
+    "width": 26,
+    "height": 18,
+    "bricks": [
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 2.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 7.0,
+            "top_left_y": 2.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 10.0,
+            "top_left_y": 2.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 13.0,
+            "top_left_y": 2.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 3.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 4.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 5.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 6.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 7.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 8.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 9.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 4.0,
+            "top_left_y": 10.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 7.0,
+            "top_left_y": 10.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 10.0,
+            "top_left_y": 10.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 13.0,
+            "top_left_y": 10.0,
+            "width": 3.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 13.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 14.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 15.0,
+            "top_left_y": 4.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 15.0,
+            "top_left_y": 5.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 15.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 15.0,
+            "top_left_y": 7.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 15.0,
+            "top_left_y": 8.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 16.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 17.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 19.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 20.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 21.0,
+            "top_left_y": 4.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 21.0,
+            "top_left_y": 5.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 21.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 21.0,
+            "top_left_y": 7.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 21.0,
+            "top_left_y": 8.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 22.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        },
+        {
+            "top_left_x": 23.0,
+            "top_left_y": 6.0,
+            "width": 1.0,
+            "height": 1.0,
+            "hitpoints": 3
+        }
+    ],
+    "indestructible bricks": []
+}
