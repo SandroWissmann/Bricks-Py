@@ -160,7 +160,7 @@ def _read_indestructible_bricks_from_json_data(
 ) -> List[IndestructibleBrick]:
     ind_bricks: List[IndestructibleBrick] = []
     if "indestructible bricks" in data:
-        for ind_brick_data in data["indestructible_bricks"]:
+        for ind_brick_data in data["indestructible bricks"]:
             x: float = ind_brick_data["top_left_x"]
             y: float = ind_brick_data["top_left_y"]
             w: float = ind_brick_data["width"]
