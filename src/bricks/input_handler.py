@@ -65,7 +65,6 @@ class InputHandler:
             if event.type == QUIT:
                 self._input_event = self._Event.quit
             if event.type == KEYUP:
-                print("KEYUP")
                 self._input_event = self._Event.none
             if event.type == KEYDOWN:
                 if event.key == K_SPACE:
@@ -78,57 +77,6 @@ class InputHandler:
                     self._input_event = self._Event.right
                 if event.key == K_p:
                     self._input_event = self._Event.p
-
-        # pressed = pygame.key.get_pressed()
-        # if pressed[K_LEFT]:
-        #     return self._Event.left
-        # if pressed[K_RIGHT]:
-        #     return self._Event.left
-        # if pressed[K_SPACE]:
-        #     return self._Event.space
-        # if pressed[K_ESCAPE]:
-        #     return self._Event.space
-
-        # while True:
-        #     poll_event = pygame.event.poll()
-        #     if poll_event == NOEVENT:
-        #         print("NOEVENT")
-        #         break
-        #     if poll_event.type == QUIT:
-        #         print("QUIT")
-        #         return self._Event.quit
-        #     if poll_event.type == KEYDOWN:
-        #         print("KEYDOWN")
-        #         if poll_event.key == K_p:
-        #             print("P")
-        #             return self._Event.p
-        #         if poll_event.key == K_LEFT:
-        #             print("K_LEFT")
-        #             return self._Event.left
-        #         if poll_event.key == K_RIGHT:
-        #             print("K_RIGHT")
-        #             return self._Event.right
-        #         if poll_event.key == K_SPACE:
-        #             print("K_SPACE")
-        #             return self._Event.space
-        #         if poll_event.key == K_ESCAPE:
-        #             print("K_ESCAPE")
-        #             return self._Event.escape
-
-        # keys = pygame.key.get_pressed()
-        # if keys[K_LEFT]:
-        #     print("K_LEFT")
-        #     return self._Event.left
-        # if keys[K_RIGHT]:
-        #     print("K_RIGHT")
-        #     return self._Event.right
-        # if keys[K_SPACE]:
-        #     print("K_SPACE")
-        #     return self._Event.space
-        # if keys[K_ESCAPE]:
-        #     print("K_ESCAPE")
-        #     return self._Event.escape
-        # return self._Event.none
 
     def _handle_event(
         self, event: _Event, elapsed_time_in_ms: float, level: Level
