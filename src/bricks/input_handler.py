@@ -59,6 +59,8 @@ class InputHandler:
 
     def _update_input_event(self):
         events = pygame.event.get()
+        if self._input_event == self._Event.p:
+            self._input_event = self._Event.none
         for event in events:
             if event.type == QUIT:
                 self._input_event = self._Event.quit
