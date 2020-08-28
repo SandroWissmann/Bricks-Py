@@ -213,6 +213,8 @@ def _increase_difficulty(
 
     dp = difficulty_paramters
 
+    print(dp.platform_velocity)
+
     dp.platform_velocity = _clamp(
         dp.platform_velocity,
         dp.platform_velocity + PLATFORM_VELOCITY_INCREASE,
@@ -280,10 +282,10 @@ def _load_level(level_filenames: List[str], level_idx: int) -> Level:
 
 
 def _get_level_filenames_from_folder(folder_name: str) -> List[str]:
-    filenames = []
+    filenames: List[str] = []
     for filepath in pathlib.Path(folder_name).glob("**/*.json"):
         filenames.append(str(filepath.absolute()))
-    return filenames
+    return sorted(filenames)
 
 
 def _clamp(minimum, x, maximum):
