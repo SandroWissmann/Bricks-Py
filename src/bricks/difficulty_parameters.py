@@ -21,7 +21,7 @@ class DifficultyParameters:
 
     @property
     def platform_width(self) -> float:
-        return self._platform_velocity
+        return self._platform_width
 
     @platform_width.setter
     def platform_width(self, platform_width: float):
