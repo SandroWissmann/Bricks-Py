@@ -102,7 +102,7 @@ class Game:
                     self._highscore = self._score
                     _save_highscore(self._highscore)
                 self._current_level_idx = 1
-                self._lives = START_LIFES
+                self._lifes = START_LIFES
                 self._is_game_over = False
                 self._score = 0
                 self._difficulty_parameters = DifficultyParameters()
