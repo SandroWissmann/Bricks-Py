@@ -74,6 +74,8 @@ class InputHandler:
                     self._input_event = self._Event.left
                 if event.key == K_RIGHT:
                     self._input_event = self._Event.right
+                if event.key == K_p:
+                    self._input_event = self._Event.p
 
         # pressed = pygame.key.get_pressed()
         # if pressed[K_LEFT]:
