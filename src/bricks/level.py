@@ -165,7 +165,6 @@ def _read_indestructible_bricks_from_json_data(
             y: float = ind_brick_data["top_left_y"]
             w: float = ind_brick_data["width"]
             h: float = ind_brick_data["height"]
-            hp: int = ind_brick_data["hitpoints"]
             ind_brick = IndestructibleBrick(
                 top_left=Point(x, y), width=w, height=h
             )
