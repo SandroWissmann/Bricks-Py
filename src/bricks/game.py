@@ -65,7 +65,7 @@ class Game:
         self._audio_device = AudioDevice()
         self._input_handler = InputHandler()
         self._level_filenames = _get_level_filenames_from_folder("level")
-        self._level = _load_level(self._level_filenames, 4)
+        self._level = _load_level(self._level_filenames, 1)
         self._difficulty_parameters = DifficultyParameters
         self._renderer = Renderer(
             screen_width=screen_width,
