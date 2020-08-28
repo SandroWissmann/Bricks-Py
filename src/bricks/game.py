@@ -281,7 +281,7 @@ def _load_level(level_filenames: List[str], level_idx: int) -> Level:
 def _get_level_filenames_from_folder(folder_name: str) -> List[str]:
     filenames = []
     for filepath in pathlib.Path(folder_name).glob("**/*.json"):
-        filenames.append(filepath.absolute())
+        filenames.append(str(filepath.absolute()))
     return filenames
 
 
