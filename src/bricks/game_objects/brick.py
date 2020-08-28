@@ -23,11 +23,11 @@ class Brick(GameObject):
         return self._hitpoints
 
     def decrease_hitpoints(self):
-        if self.hitpoints > 0:
+        if self._hitpoints > 0:
             self._hitpoints -= 1
 
     def is_destroyed(self) -> bool:
-        return self.hitpoints == 0
+        return self._hitpoints == 0
 
 
 def _check_args_hitpoints(hitpoints: int) -> int:

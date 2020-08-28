@@ -178,7 +178,7 @@ class Game:
             if reflect(self._level.ball, indestructible_brick):
                 return
         for brick in self._level.bricks:
-            if brick.is_destroyed:
+            if brick.is_destroyed():
                 continue
             if reflect(self._level.ball, brick):
                 brick.decrease_hitpoints()
