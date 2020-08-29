@@ -8,7 +8,7 @@ from random import uniform
 from numpy import deg2rad
 
 
-def reflect(ball: Ball, obj: GameObject):
+def reflect(ball: Ball, obj: GameObject) -> bool:
     if ball.angle.quadrant == Quadrant.I:
         if isinstance(obj, Platform):
             return _reflect_from_platform_quadrant_I(ball, obj)
