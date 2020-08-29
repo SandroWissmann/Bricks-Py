@@ -84,6 +84,11 @@ class Level:
     def top_wall(self) -> Wall:
         return self._top_wall
 
+    @property
+    def difficulty_parameters(self) -> DifficultyParameters:
+        return self._difficulty_parameters
+
+    @difficulty_parameters.setter
     def difficulty_parameters(
         self, difficulty_parameters: DifficultyParameters
     ):
