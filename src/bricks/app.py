@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from bricks.game import Game
 
 SCREEN_WIDTH = 780
