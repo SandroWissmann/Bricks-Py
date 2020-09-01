@@ -127,12 +127,12 @@ def _calc_angle_factor(
 
 def reflect_from_game_objects(
     ball: Ball, game_objects: List[GameObject]
-) -> bool:
+) -> List[GameObject]:
     object_intersection_pairs = _get_object_intersection_pairs(
         ball, game_objects
     )
     if len(object_intersection_pairs) == 0:
-        return False
+        return []
     if len(object_intersection_pairs) == 1:
         _reflect_from_single_object(
             ball=ball,
@@ -140,14 +140,19 @@ def reflect_from_game_objects(
             intersection=object_intersection_pairs[0][1],
         )
         ball.angle = _clamp_angle(ball.angle)
-        return True
+
+        return [object_intersection_pairs[0][0]]
     if len(object_intersection_pairs) > 1:
         _reflect_from_multiple_objects(
             ball=ball, object_intersection_pairs=object_intersection_pairs
         )
         ball.angle = _clamp_angle(ball.angle)
-        return True
-    return False
+
+        hit_objects: List[GameObject] = []
+        for object_intersection_pair in object_intersection_pairs:
+            hit_objects.append(object_intersection_pair[0])
+        return hit_objects
+    return []
 
 
 def _get_object_intersection_pairs(
@@ -157,6 +162,10 @@ def _get_object_intersection_pairs(
     for game_object in game_objects:
         intersection = _get_intersection(ball, game_object)
         if intersection != _Intersection.NONE:
+            if isinstance(game_object, Brick):
+                if game_object.is_destroyed():
+                    continue
+                game_object.decrease_hitpoints()
             object_intersection_pairs.append((game_object, intersection))
     return object_intersection_pairs
 
