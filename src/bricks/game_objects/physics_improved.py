@@ -38,11 +38,13 @@ def reflect(ball: Ball, game_objects: List[GameObject]) -> bool:
             game_object=object_intersection_pairs[0][0],
             intersection=object_intersection_pairs[0][1],
         )
+        ball.angle = _clamp_angle(ball.angle)
         return True
     if len(object_intersection_pairs) > 1:
         _reflect_from_multiple_objects(
             ball=ball, object_intersection_pairs=object_intersection_pairs
         )
+        ball.angle = _clamp_angle(ball.angle)
         return True
     return False
 
@@ -376,6 +378,45 @@ def _put_before_intersects_with_bottom_y(ball: Ball, obj: GameObject):
 
 def _put_before_intersects_with_top_y(ball: Ball, obj: GameObject):
     ball.top_left.y = obj.bottom_right.y
+
+
+def _clamp_angle(angle: Angle) -> Angle:
+    """
+    Certain angles in the game should be prohibited because they are not funny 
+    to play. The Function checks if angle is in the forbidden area and adjusts 
+    the angle.
+    """
+    delta_x = deg2rad(30.0)
+    delta_y = deg2rad(15.0)
+
+    new_angle = angle
+
+    if _is_bigger(angle.value, deg2rad(0.0), delta_x):
+        new_angle.value = deg2rad(0.0) + delta_x
+    elif _is_smaller(angle.value, deg2rad(90.0), delta_y):
+        new_angle.value = deg2rad(90.0) - delta_y
+    elif _is_bigger(angle.value, deg2rad(90.0), delta_y):
+        new_angle.value = deg2rad(90.0) + delta_y
+    elif _is_smaller(angle.value, deg2rad(180.0), delta_x):
+        new_angle.value = deg2rad(180.0) - delta_x
+    elif _is_bigger(angle.value, deg2rad(180.0), delta_x):
+        new_angle.value = deg2rad(180.0) + delta_x
+    elif _is_smaller(angle.value, deg2rad(270.0), delta_y):
+        new_angle.value = deg2rad(270.0) - delta_y
+    elif _is_bigger(angle.value, deg2rad(270.0), delta_y):
+        new_angle.value = deg2rad(270.0) + delta_y
+    elif _is_smaller(angle.value, deg2rad(360.0), delta_x):
+        new_angle.value = deg2rad(360.0) - delta_x
+
+    return new_angle
+
+
+def _is_smaller(angle: float, target_angle: float, delta: float) -> bool:
+    return angle >= target_angle - delta and angle < target_angle
+
+
+def _is_bigger(angle: float, target_angle: float, delta: float) -> bool:
+    return angle >= target_angle and angle < target_angle + delta
 
 
 def _random(minimum: float, maximum: float) -> float:
