@@ -50,7 +50,9 @@ def _reflect_from_platform(
         _reflect_from_collision_with_top_relative_to_positon(ball, platform)
     elif intersection == _Intersection.TOP_RIGHT:
         if _intersection_is_more_top_than_right(ball, platform):
-            _reflect_from_collision_with_top(ball, platform)
+            _reflect_from_collision_with_top_relative_to_positon(
+                ball, platform
+            )
         else:
             _reflect_from_collision_with_right(ball, platform)
     elif intersection == _Intersection.RIGHT:
@@ -70,13 +72,15 @@ def _reflect_from_platform(
 
 
 def _reflect_from_collision_with_top_relative_to_positon(ball, platform):
-    assert ball.angle.quadrant_angle != Quadrant.III
-    assert ball.angle.quadrant_angle != Quadrant.IV
+    assert ball.angle.quadrant != Quadrant.III
+    assert ball.angle.quadrant != Quadrant.IV
 
-    if ball.angle.quadrant_angle == Quadrant.I:
+    if ball.angle.quadrant == Quadrant.I:
         _reflect_horizontal_I_to_IV(ball, platform)
-    elif ball.angle.quadrant_angle == Quadrant.II:
-        _reflect_horizontal_II_to_III(ball, Platform)
+        _put_before_intersects_with_bottom_y(ball, platform)
+    elif ball.angle.quadrant == Quadrant.II:
+        _reflect_horizontal_II_to_III(ball, platform)
+        _put_before_intersects_with_bottom_y(ball, platform)
 
 
 def _reflect_horizontal_I_to_IV(ball: Ball, platform: Platform):
@@ -94,12 +98,12 @@ def _reflect_horizontal_I_to_IV(ball: Ball, platform: Platform):
 
 
 def _reflect_horizontal_II_to_III(ball: Ball, platform: Platform):
-    x_righ = platform.bottom_right.x
+    x_right = platform.bottom_right.x
     x_left = platform.top_left.x
     x_center = x_left + (platform.width / 2.0)
     x_ball = ball.top_left.x
 
-    factor = _calc_angle_factor(x_ball, x_left, x_center, x_righ)
+    factor = _calc_angle_factor(x_ball, x_left, x_center, x_right)
     new_quad_angle = deg2rad(30.0) + (deg2rad(45.0) - (deg2rad(45.0) * factor))
     assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
 
