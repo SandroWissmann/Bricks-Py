@@ -2,7 +2,8 @@ from bricks.game_objects.ball import Ball
 from bricks.game_objects.brick import Brick
 from bricks.game_objects.game_object import GameObject
 from bricks.game_objects.indestructible_brick import IndestructibleBrick
-from bricks.game_objects.physics import reflect
+from bricks.game_objects.physics_improved import reflect_from_game_objects
+from bricks.game_objects.physics_improved import reflect_from_platform
 from bricks.game_objects.platform import Platform
 from bricks.game_objects.wall import Wall
 
@@ -165,32 +166,28 @@ class Game:
         return self._level.ball.bottom_right.y >= self._level.grid_height
 
     def _handle_ball_collisions(self):
-        if reflect(self._level.ball, self._level.left_wall):
-            return
-        if reflect(self._level.ball, self._level.right_wall):
-            return
-        if reflect(self._level.ball, self._level.top_wall):
-            return
-        if reflect(self._level.ball, self._level.platform):
-            play_hit_platform(self._audio_device)
-            return
-        for indestructible_brick in self._level.indestructible_bricks:
-            if reflect(self._level.ball, indestructible_brick):
-                return
-        for brick in self._level.bricks:
-            if brick.is_destroyed():
-                continue
-            if reflect(self._level.ball, brick):
-                brick.decrease_hitpoints()
+        hit_objects = reflect_from_game_objects(
+            ball=self._level.ball,
+            game_objects=[self._level.left_wall]
+            + [self._level.right_wall]
+            + [self._level.top_wall]
+            + self._level.bricks
+            + self._level.indestructible_bricks,
+        )
 
-                if brick.is_destroyed():
-                    play_destroy_brick(self._audio_device)
-                    self._score += self._get_brick_score(brick)
-                    self._award_extra_life_it_threshold_reached()
-                    self._update_values_in_title_bar()
-                else:
-                    play_hit_brick(self._audio_device)
-                return
+        for hit_object in hit_objects:
+            if not isinstance(hit_object, Brick):
+                continue
+            if hit_object.is_destroyed():
+                play_destroy_brick(self._audio_device)
+                self._score += self._get_brick_score(hit_object)
+                self._award_extra_life_it_threshold_reached()
+                self._update_values_in_title_bar()
+            else:
+                play_hit_brick(self._audio_device)
+
+        if reflect_from_platform(self._level.ball, self._level.platform):
+            play_hit_platform(self._audio_device)
 
     def _get_brick_score(self, brick: Brick) -> int:
         return (
