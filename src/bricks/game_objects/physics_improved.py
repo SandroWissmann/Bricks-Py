@@ -26,7 +26,108 @@ class _Intersection(Enum):
     BOTTOM_LEFT = 8
 
 
-def reflect(ball: Ball, game_objects: List[GameObject]) -> bool:
+def reflect_from_platform(ball: Ball, platform: Platform) -> bool:
+    intersection = _get_intersection(ball, platform)
+    if intersection == _Intersection.NONE:
+        return False
+    _reflect_from_platform(ball, platform, intersection)
+    return True
+
+
+def _reflect_from_platform(
+    ball: Ball, platform: Platform, intersection: _Intersection
+):
+    if intersection == _Intersection.LEFT:
+        _reflect_from_collision_with_left(ball, platform)
+    elif intersection == _Intersection.TOP_LEFT:
+        if _intersection_is_more_left_than_top(ball, platform):
+            _reflect_from_collision_with_left(ball, platform)
+        else:
+            _reflect_from_collision_with_top_relative_to_positon(
+                ball, platform
+            )
+    elif intersection == _Intersection.TOP:
+        _reflect_from_collision_with_top_relative_to_positon(ball, platform)
+    elif intersection == _Intersection.TOP_RIGHT:
+        if _intersection_is_more_top_than_right(ball, platform):
+            _reflect_from_collision_with_top(ball, platform)
+        else:
+            _reflect_from_collision_with_right(ball, platform)
+    elif intersection == _Intersection.RIGHT:
+        _reflect_from_collision_with_right(ball, platform)
+    elif intersection == _Intersection.BOTTOM_RIGHT:
+        if _intersection_is_more_right_than_bottom(ball, platform):
+            _reflect_from_collision_with_right(ball, platform)
+        else:
+            _reflect_from_collision_with_bottom(ball, platform)
+    elif intersection == _Intersection.BOTTOM:
+        _reflect_from_collision_with_bottom(ball, platform)
+    elif intersection == _Intersection.BOTTOM_LEFT:
+        if _intersection_is_more_bottom_than_left(ball, platform):
+            _reflect_from_collision_with_bottom(ball, platform)
+        else:
+            _reflect_from_collision_with_left(ball, platform)
+
+
+def _reflect_from_collision_with_top_relative_to_positon(ball, platform):
+    assert ball.angle.quadrant_angle != Quadrant.III
+    assert ball.angle.quadrant_angle != Quadrant.IV
+
+    if ball.angle.quadrant_angle == Quadrant.I:
+        _reflect_horizontal_I_to_IV(ball, platform)
+    elif ball.angle.quadrant_angle == Quadrant.II:
+        _reflect_horizontal_II_to_III(ball, Platform)
+
+
+def _reflect_horizontal_I_to_IV(ball: Ball, platform: Platform):
+    x_right = platform.bottom_right.x
+    x_left = platform.top_left.x
+    x_center = x_right - (platform.width / 2.0)
+    x_ball = ball.bottom_right.x
+
+    factor = _calc_angle_factor(x_ball, x_left, x_center, x_right)
+    new_quad_angle = deg2rad(60.0) - (deg2rad(45.0) - deg2rad(45.0) * factor)
+    assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
+
+    ball.angle.mirror_horizontal()
+    ball.angle.quadrant_angle = new_quad_angle
+
+
+def _reflect_horizontal_II_to_III(ball: Ball, platform: Platform):
+    x_righ = platform.bottom_right.x
+    x_left = platform.top_left.x
+    x_center = x_left + (platform.width / 2.0)
+    x_ball = ball.top_left.x
+
+    factor = _calc_angle_factor(x_ball, x_left, x_center, x_righ)
+    new_quad_angle = deg2rad(30.0) + (deg2rad(45.0) - (deg2rad(45.0) * factor))
+    assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
+
+    ball.angle.mirror_horizontal()
+    ball.angle.quadrant_angle = new_quad_angle
+
+
+def _calc_angle_factor(
+    x_ball: float, x_left: float, x_center: float, x_right: float
+) -> float:
+    assert x_left < x_center
+    assert x_center < x_right
+
+    x_ball = _clamp(x_left, x_ball, x_right)
+
+    length = x_center - x_left
+    if x_ball <= x_center:
+        factor = (x_center - x_ball) / length
+    else:
+        factor = (x_ball - x_center) / length
+    factor = _clamp(0.0, factor, 1.0)
+    assert 0.0 <= factor <= 1.0
+    return factor
+
+
+def reflect_from_game_objects(
+    ball: Ball, game_objects: List[GameObject]
+) -> bool:
     object_intersection_pairs = _get_object_intersection_pairs(
         ball, game_objects
     )
