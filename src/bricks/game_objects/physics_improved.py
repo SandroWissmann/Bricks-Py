@@ -62,19 +62,27 @@ def _get_intersection(ball: Ball, obj: GameObject) -> _Intersection:
     intersections: List[_Intersection] = []
 
     if _top_left_intersects_with_bottom_right(
-        top_left=ball.top_left, bottom_right=obj.bottom_right
+        top_left_1=ball.top_left,
+        bottom_right_2=obj.bottom_right,
+        top_left_2=obj.top_left,
     ):
         intersections.append(_Intersection.BOTTOM_RIGHT)
     elif _top_right_intersects_with_bottom_left(
-        top_right=ball.top_right, bottom_left=obj.bottom_left
+        top_right_1=ball.top_right,
+        bottom_left_2=obj.bottom_left,
+        top_right_2=obj.top_right,
     ):
         intersections.append(_Intersection.BOTTOM_LEFT)
     elif _bottom_left_intersects_with_top_right(
-        bottom_left=ball.bottom_left, top_right=obj.top_right
+        bottom_left_1=ball.bottom_left,
+        top_right_2=obj.top_right,
+        bottom_left_2=obj.bottom_left,
     ):
         intersections.append(_Intersection.TOP_RIGHT)
     elif _bottom_right_intersects_with_top_left(
-        bottom_right=ball.bottom_right, top_left=obj.top_left
+        bottom_right_1=ball.bottom_right,
+        top_left_2=obj.top_left,
+        bottom_right_2=obj.bottom_right,
     ):
         intersections.append(_Intersection.TOP_LEFT)
 
@@ -94,32 +102,40 @@ def _get_intersection(ball: Ball, obj: GameObject) -> _Intersection:
     return _Intersection.NONE
 
 
-def _top_left_intersects_with_bottom_right(
-    top_left: Point, bottom_right: Point
+def _bottom_right_intersects_with_top_left(
+    bottom_right_1: Point, top_left_2: Point, bottom_right_2: Point
 ) -> bool:
-    """Top left of square 1 is inside the bottom right of square 2."""
-    return bottom_right.x >= top_left.x and bottom_right.y >= top_left.y
-
-
-def _top_right_intersects_with_bottom_left(
-    top_right: Point, bottom_left: Point
-) -> bool:
-    """Top right of square 1 is inside the bottom left of square 2."""
-    return bottom_left.x <= top_right.x and bottom_left.y >= top_right.y
+    """Bottom right of square 1 is inside the top left of square 2."""
+    x_is_inside = top_left_2.x <= bottom_right_1.x < bottom_right_2.x
+    y_is_inside = top_left_2.y <= bottom_right_1.y < bottom_right_2.y
+    return x_is_inside and y_is_inside
 
 
 def _bottom_left_intersects_with_top_right(
-    bottom_left: Point, top_right: Point
+    bottom_left_1: Point, top_right_2: Point, bottom_left_2: Point
 ) -> bool:
     """Bottom left of square 1 is inside the top right of square 2."""
-    return top_right.x >= bottom_left.x and top_right.y <= bottom_left.y
+    x_is_inside = top_right_2.x >= bottom_left_1.x > bottom_left_2.x
+    y_is_inside = top_right_2.y <= bottom_left_1.y < bottom_left_2.y
+    return x_is_inside and y_is_inside
 
 
-def _bottom_right_intersects_with_top_left(
-    bottom_right: Point, top_left: Point
+def _top_left_intersects_with_bottom_right(
+    top_left_1: Point, bottom_right_2: Point, top_left_2: Point
 ) -> bool:
-    """Bottom right of square 1 is inside the top left of square 2."""
-    return top_left.x <= bottom_right.x and top_left.y <= bottom_right.y
+    """Top left of square 1 is inside the bottom right of square 2."""
+    x_is_inside = bottom_right_2.x >= top_left_1.x > top_left_2.x
+    y_is_inside = bottom_right_2.y >= top_left_1.y > top_left_2.y
+    return x_is_inside and y_is_inside
+
+
+def _top_right_intersects_with_bottom_left(
+    top_right_1: Point, bottom_left_2: Point, top_right_2: Point
+) -> bool:
+    """Top right of square 1 is inside the bottom left of square 2."""
+    x_is_inside = bottom_left_2.x <= top_right_1.x < top_right_2.x
+    y_is_inside = bottom_left_2.y >= top_right_1.y > top_right_2.y
+    return x_is_inside and y_is_inside
 
 
 def _interects_left(intersections: List[_Intersection]) -> bool:
@@ -252,7 +268,7 @@ def _intersects_from_right_with_multi_objects(
 def _intersects_from_bottom_with_multi_objects(
     object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
 ) -> bool:
-    assert len(object_intersection_pairs) > 2
+    assert len(object_intersection_pairs) > 1
 
     valid_values = [
         _Intersection.BOTTOM,
@@ -279,22 +295,22 @@ def _object_intersection_pairs_contain_only_values_from_intersection_list(
 
 
 def _reflect_from_collision_with_left(ball: Ball, game_object: GameObject):
-    _reflect_horizontal(ball)
+    _reflect_vertical(ball)
     _put_before_intersects_with_right_x(ball, game_object)
 
 
 def _reflect_from_collision_with_top(ball: Ball, game_object: GameObject):
-    _reflect_vertical(ball)
+    _reflect_horizontal(ball)
     _put_before_intersects_with_bottom_y(ball, game_object)
 
 
 def _reflect_from_collision_with_right(ball: Ball, game_object: GameObject):
-    _reflect_horizontal(ball)
+    _reflect_vertical(ball)
     _put_before_intersects_with_left_x(ball, game_object)
 
 
 def _reflect_from_collision_with_bottom(ball: Ball, game_object: GameObject):
-    _reflect_vertical(ball)
+    _reflect_horizontal(ball)
     _put_before_intersects_with_top_y(ball, game_object)
 
 
@@ -315,7 +331,7 @@ def _intersection_is_more_top_than_right(
     y = ball.bottom_left.y - game_object.top_right.y
     assert x >= 0
     assert y >= 0
-    return y > x
+    return x > y
 
 
 def _intersection_is_more_right_than_bottom(
@@ -335,7 +351,7 @@ def _intersection_is_more_bottom_than_left(
     y = game_object.bottom_left.y - ball.top_right.y
     assert x >= 0
     assert y >= 0
-    return y > x
+    return x > y
 
 
 def _reflect_horizontal(ball: Ball):
