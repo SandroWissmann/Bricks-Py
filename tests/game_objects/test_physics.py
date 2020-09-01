@@ -5,22 +5,9 @@ from bricks.game_objects.game_object import GameObject
 from bricks.types.point import Point
 from bricks.types.angle import Angle, Quadrant
 
+from bricks.game_objects.physics import reflect_from_game_objects
 from bricks.game_objects.physics import _calc_angle_factor
 from bricks.game_objects.physics import _clamp_angle
-from bricks.game_objects.physics import _intersects_with_right_x
-from bricks.game_objects.physics import _intersects_with_left_x
-from bricks.game_objects.physics import _intersects_with_bottom_y
-from bricks.game_objects.physics import _intersects_with_top_y
-from bricks.game_objects.physics import _is_inside_with_x
-from bricks.game_objects.physics import _is_inside_with_y
-from bricks.game_objects.physics import _not_through_with_right_x
-from bricks.game_objects.physics import _not_through_with_left_x
-from bricks.game_objects.physics import _not_through_with_top_y
-from bricks.game_objects.physics import _not_through_with_bottom_y
-from bricks.game_objects.physics import _put_before_intersects_with_right_x
-from bricks.game_objects.physics import _put_before_intersects_with_left_x
-from bricks.game_objects.physics import _put_before_intersects_with_top_y
-from bricks.game_objects.physics import _put_before_intersects_with_bottom_y
 
 from pytest import approx
 from numpy import deg2rad
@@ -28,6 +15,112 @@ import pytest
 
 
 class TestPhysics:
+    @pytest.mark.parametrize(
+        "ball_top_left, ball_angle, ball_result_top_left, ball_result_angle",
+        [
+            (Point(1.0, 0.0), 30.0, Point(0.0, 0.0), 150.0,),
+            (Point(1.0, 3.0), 30.0, Point(0.0, 3.0), 150.0,),
+            (Point(1.0, 6.0), 30.0, Point(0.0, 6.0), 150.0,),
+            (Point(1.0, 8.0), 30.0, Point(0.0, 8.0), 150.0,),
+            (Point(1.0, 11.0), 30.0, Point(0.0, 11.0), 150.0,),
+            (Point(1.0, 0.0), 330.0, Point(0.0, 0.0), 210.0,),
+            (Point(1.0, 3.0), 330.0, Point(0.0, 3.0), 210.0,),
+            (Point(1.0, 6.0), 330.0, Point(0.0, 6.0), 210.0,),
+            (Point(1.0, 8.0), 330.0, Point(0.0, 8.0), 210.0,),
+            (Point(1.0, 11.0), 330.0, Point(0.0, 11.0), 210.0,),
+            (Point(6.0, 0.0), 150.0, Point(7.0, 0.0), 30.0,),
+            (Point(6.0, 3.0), 150.0, Point(7.0, 3.0), 30.0,),
+            (Point(6.0, 6.0), 150.0, Point(7.0, 6.0), 30.0,),
+            (Point(6.0, 8.0), 150.0, Point(7.0, 8.0), 30.0,),
+            (Point(6.0, 11.0), 150.0, Point(7.0, 11.0), 30.0,),
+            (Point(6.0, 0.0), 210.0, Point(7.0, 0.0), 330.0,),
+            (Point(6.0, 3.0), 210.0, Point(7.0, 3.0), 330.0,),
+            (Point(6.0, 6.0), 210.0, Point(7.0, 6.0), 330.0,),
+            (Point(6.0, 8.0), 210.0, Point(7.0, 8.0), 330.0,),
+            (Point(6.0, 11.0), 210.0, Point(7.0, 11.0), 330.0,),
+        ],
+    )
+    def test_reflect_horizontal(
+        self,
+        ball_top_left: Point,
+        ball_angle: float,
+        ball_result_top_left: Point,
+        ball_result_angle: float,
+    ):
+        ball = Ball(
+            top_left=ball_top_left,
+            width=3.0,
+            height=3.0,
+            velocity=1.0,
+            angle=Angle(deg2rad(ball_angle)),
+        )
+
+        bricks = [
+            Brick(top_left=Point(3.0, 1.0), width=4.0, height=4.0),
+            Brick(top_left=Point(3.0, 5.0), width=4.0, height=4.0),
+            Brick(top_left=Point(3.0, 9.0), width=4.0, height=4.0),
+        ]
+
+        result = reflect_from_game_objects(ball, bricks)
+
+        assert result == True
+        assert ball.top_left.x == ball_result_top_left.x
+        assert ball.top_left.y == ball_result_top_left.y
+        assert ball.angle.value == approx(deg2rad(ball_result_angle))
+
+    @pytest.mark.parametrize(
+        "ball_top_left, ball_angle, ball_result_top_left, ball_result_angle",
+        [
+            (Point(0.0, 1.0), 30.0, Point(0.0, 0.0), 330.0,),
+            (Point(3.0, 1.0), 30.0, Point(3.0, 0.0), 330.0,),
+            (Point(6.0, 1.0), 30.0, Point(6.0, 0.0), 330.0,),
+            (Point(8.0, 1.0), 30.0, Point(8.0, 0.0), 330.0,),
+            (Point(11.0, 1.0), 30.0, Point(11.0, 0.0), 330.0,),
+            (Point(0.0, 1.0), 150.0, Point(0.0, 0.0), 210.0,),
+            (Point(3.0, 1.0), 150.0, Point(3.0, 0.0), 210.0,),
+            (Point(6.0, 1.0), 150.0, Point(6.0, 0.0), 210.0,),
+            (Point(8.0, 1.0), 150.0, Point(8.0, 0.0), 210.0,),
+            (Point(11.0, 1.0), 150.0, Point(11.0, 0.0), 210.0,),
+            (Point(0.0, 6.0), 330.0, Point(0.0, 7.0), 30.0,),
+            (Point(3.0, 6.0), 330.0, Point(3.0, 7.0), 30.0,),
+            (Point(6.0, 6.0), 330.0, Point(6.0, 7.0), 30.0,),
+            (Point(8.0, 6.0), 330.0, Point(8.0, 7.0), 30.0,),
+            (Point(11.0, 6.0), 330.0, Point(11.0, 7.0), 30.0,),
+            (Point(0.0, 6.0), 210.0, Point(0.0, 7.0), 150.0,),
+            (Point(3.0, 6.0), 210.0, Point(3.0, 7.0), 150.0,),
+            (Point(6.0, 6.0), 210.0, Point(6.0, 7.0), 150.0,),
+            (Point(8.0, 6.0), 210.0, Point(8.0, 7.0), 150.0,),
+            (Point(11.0, 6.0), 210.0, Point(11.0, 7.0), 150.0,),
+        ],
+    )
+    def test_reflect_vertical(
+        self,
+        ball_top_left: Point,
+        ball_angle: float,
+        ball_result_top_left: Point,
+        ball_result_angle: float,
+    ):
+        ball = Ball(
+            top_left=ball_top_left,
+            width=3.0,
+            height=3.0,
+            velocity=1.0,
+            angle=Angle(deg2rad(ball_angle)),
+        )
+
+        bricks = [
+            Brick(top_left=Point(1.0, 3.0), width=4.0, height=4.0),
+            Brick(top_left=Point(5.0, 3.0), width=4.0, height=4.0),
+            Brick(top_left=Point(9.0, 3.0), width=4.0, height=4.0),
+        ]
+
+        result = reflect_from_game_objects(ball, bricks)
+
+        assert result == True
+        assert ball.top_left.x == ball_result_top_left.x
+        assert ball.top_left.y == ball_result_top_left.y
+        assert ball.angle.value == approx(deg2rad(ball_result_angle))
+
     @pytest.mark.parametrize(
         "x_ball, expected_result",
         [
@@ -136,306 +229,3 @@ class TestPhysics:
         angle = Angle(deg2rad(input_angle))
         output = _clamp_angle(angle)
         assert output.value == approx(deg2rad(output_angle))
-
-    # fixtures for following test to check how the ball reacts to collisions
-    # from all sides
-    @pytest.fixture
-    def collison_brick_top_left(self):
-        return Brick(top_left=Point(0.0, 0.0), width=2.0, height=2.0)
-
-    @pytest.fixture
-    def collison_brick_top(self):
-        return Brick(top_left=Point(0.0, 0.0), width=5.0, height=2.0)
-
-    @pytest.fixture
-    def collison_brick_top_right(self):
-        return Brick(top_left=Point(3.0, 0.0), width=2.0, height=2.0)
-
-    @pytest.fixture
-    def collison_brick_right(self):
-        return Brick(top_left=Point(3.0, 0.0), width=2.0, height=5.0)
-
-    @pytest.fixture
-    def collison_brick_bottom_right(self):
-        return Brick(top_left=Point(3.0, 3.0), width=2.0, height=2.0)
-
-    @pytest.fixture
-    def collison_brick_bottom(self):
-        return Brick(top_left=Point(0.0, 3.0), width=5.0, height=2.0)
-
-    @pytest.fixture
-    def collison_brick_bottom_left(self):
-        return Brick(top_left=Point(0.0, 3.0), width=2.0, height=2.0)
-
-    @pytest.fixture
-    def collison_brick_left(self):
-        return Brick(top_left=Point(0.0, 0.0), width=2.0, height=5.0)
-
-    @pytest.fixture
-    def collison_ball(self):
-        return Ball(
-            top_left=Point(1.0, 1.0),
-            width=3.0,
-            height=3.0,
-            velocity=10.0,
-            angle=Angle(deg2rad(0.0)),
-            gravity=0.0,
-        )
-
-    @pytest.fixture
-    def collision_fixtures(
-        self,
-        collison_ball,
-        collison_brick_top_left,
-        collison_brick_top,
-        collison_brick_top_right,
-        collison_brick_right,
-        collison_brick_bottom_right,
-        collison_brick_bottom,
-        collison_brick_bottom_left,
-        collison_brick_left,
-    ):
-        return {
-            "collison_ball": collison_ball,
-            "collison_brick_top_left": collison_brick_top_left,
-            "collison_brick_top": collison_brick_top,
-            "collison_brick_top_right": collison_brick_top_right,
-            "collison_brick_right": collison_brick_right,
-            "collison_brick_bottom_right": collison_brick_bottom_right,
-            "collison_brick_bottom": collison_brick_bottom,
-            "collison_brick_bottom_left": collison_brick_bottom_left,
-            "collison_brick_left": collison_brick_left,
-        }
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", False),
-            ("collison_brick_top", False),
-            ("collison_brick_top_right", True),
-            ("collison_brick_right", True),
-            ("collison_brick_bottom_right", True),
-            ("collison_brick_bottom", False),
-            ("collison_brick_bottom_left", False),
-            ("collison_brick_left", False),
-        ],
-    )
-    def test_intersects_with_right_x(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _intersects_with_right_x(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", True),
-            ("collison_brick_top", False),
-            ("collison_brick_top_right", False),
-            ("collison_brick_right", False),
-            ("collison_brick_bottom_right", False),
-            ("collison_brick_bottom", False),
-            ("collison_brick_bottom_left", True),
-            ("collison_brick_left", True),
-        ],
-    )
-    def test_intersects_with_left_x(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _intersects_with_left_x(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", False),
-            ("collison_brick_top", False),
-            ("collison_brick_top_right", False),
-            ("collison_brick_right", False),
-            ("collison_brick_bottom_right", True),
-            ("collison_brick_bottom", True),
-            ("collison_brick_bottom_left", True),
-            ("collison_brick_left", False),
-        ],
-    )
-    def test_intersects_with_bottom_y(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _intersects_with_bottom_y(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", True),
-            ("collison_brick_top", True),
-            ("collison_brick_top_right", True),
-            ("collison_brick_right", False),
-            ("collison_brick_bottom_right", False),
-            ("collison_brick_bottom", False),
-            ("collison_brick_bottom_left", False),
-            ("collison_brick_left", False),
-        ],
-    )
-    def test_intersects_with_top_y(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _intersects_with_top_y(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", False),
-            ("collison_brick_top", True),
-            ("collison_brick_top_right", False),
-            ("collison_brick_right", False),
-            ("collison_brick_bottom_right", False),
-            ("collison_brick_bottom", True),
-            ("collison_brick_bottom_left", False),
-            ("collison_brick_left", False),
-        ],
-    )
-    def test_is_inside_with_x(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _is_inside_with_x(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", False),
-            ("collison_brick_top", False),
-            ("collison_brick_top_right", False),
-            ("collison_brick_right", True),
-            ("collison_brick_bottom_right", False),
-            ("collison_brick_bottom", False),
-            ("collison_brick_bottom_left", False),
-            ("collison_brick_left", True),
-        ],
-    )
-    def test_is_inside_with_y(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _is_inside_with_y(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", False),
-            ("collison_brick_top", True),
-            ("collison_brick_top_right", True),
-            ("collison_brick_right", True),
-            ("collison_brick_bottom_right", True),
-            ("collison_brick_bottom", True),
-            ("collison_brick_bottom_left", False),
-            ("collison_brick_left", False),
-        ],
-    )
-    def test_not_through_with_right_x(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _not_through_with_right_x(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", True),
-            ("collison_brick_top", True),
-            ("collison_brick_top_right", False),
-            ("collison_brick_right", False),
-            ("collison_brick_bottom_right", False),
-            ("collison_brick_bottom", True),
-            ("collison_brick_bottom_left", True),
-            ("collison_brick_left", True),
-        ],
-    )
-    def test_not_through_with_left_x(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _not_through_with_left_x(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", True),
-            ("collison_brick_top", True),
-            ("collison_brick_top_right", True),
-            ("collison_brick_right", True),
-            ("collison_brick_bottom_right", False),
-            ("collison_brick_bottom", False),
-            ("collison_brick_bottom_left", False),
-            ("collison_brick_left", True),
-        ],
-    )
-    def test_not_through_with_top_y(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _not_through_with_top_y(ball, brick) == expected_result
-
-    @pytest.mark.parametrize(
-        "brickname, expected_result",
-        [
-            ("collison_brick_top_left", False),
-            ("collison_brick_top", False),
-            ("collison_brick_top_right", False),
-            ("collison_brick_right", True),
-            ("collison_brick_bottom_right", True),
-            ("collison_brick_bottom", True),
-            ("collison_brick_bottom_left", True),
-            ("collison_brick_left", True),
-        ],
-    )
-    def test_not_through_with_bottom_y(
-        self, collision_fixtures, brickname: str, expected_result: bool
-    ):
-        brick = collision_fixtures[brickname]
-        ball = collision_fixtures["collison_ball"]
-        assert _not_through_with_bottom_y(ball, brick) == expected_result
-
-    def test_put_before_intersects_with_right_x(self, collision_fixtures):
-        ball = collision_fixtures["collison_ball"]
-        brick_right = collision_fixtures["collison_brick_right"]
-
-        assert ball.bottom_right.x != brick_right.top_left.x
-        _put_before_intersects_with_right_x(ball, brick_right)
-        assert ball.bottom_right.x == brick_right.top_left.x
-
-    def test_put_before_intersects_with_left_x(self, collision_fixtures):
-        ball = collision_fixtures["collison_ball"]
-        brick_left = collision_fixtures["collison_brick_left"]
-
-        assert ball.top_left.x != brick_left.bottom_right.x
-        _put_before_intersects_with_left_x(ball, brick_left)
-        assert ball.bottom_left.x == brick_left.bottom_right.x
-
-    def test_put_before_intersects_with_bottom_y(self, collision_fixtures):
-        ball = collision_fixtures["collison_ball"]
-        brick_bottom = collision_fixtures["collison_brick_bottom"]
-
-        assert ball.bottom_right.y != brick_bottom.top_left.y
-        _put_before_intersects_with_bottom_y(ball, brick_bottom)
-        assert ball.bottom_right.y == brick_bottom.top_left.y
-
-    def test_put_before_intersects_with_top_y(self, collision_fixtures):
-        ball = collision_fixtures["collison_ball"]
-        brick_top = collision_fixtures["collison_brick_top"]
-
-        assert ball.top_left.y != brick_top.bottom_right.y
-        _put_before_intersects_with_top_y(ball, brick_top)
-        assert ball.top_left.y == brick_top.bottom_right.y
-

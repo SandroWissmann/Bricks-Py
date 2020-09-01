@@ -2,8 +2,8 @@ from bricks.game_objects.ball import Ball
 from bricks.game_objects.brick import Brick
 from bricks.game_objects.game_object import GameObject
 from bricks.game_objects.indestructible_brick import IndestructibleBrick
-from bricks.game_objects.physics_improved import reflect_from_game_objects
-from bricks.game_objects.physics_improved import reflect_from_platform
+from bricks.game_objects.physics import reflect_from_game_objects
+from bricks.game_objects.physics import reflect_from_platform
 from bricks.game_objects.platform import Platform
 from bricks.game_objects.wall import Wall
 
