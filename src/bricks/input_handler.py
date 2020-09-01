@@ -2,12 +2,6 @@ from bricks.level import Level
 from bricks.game_objects.ball import Ball
 from bricks.game_objects.platform import Platform
 from bricks.game_objects.wall import Wall
-from bricks.game_objects.physics import (
-    _intersects_with_left_x,
-    _intersects_with_right_x,
-    _put_before_intersects_with_left_x,
-    _put_before_intersects_with_right_x,
-)
 
 from enum import Enum
 
@@ -140,3 +134,25 @@ def _move_right(platform: Platform, elapsed_time_in_ms: float):
     if platform.velocity < 0:
         platform.velocity *= -1
     platform.move(elapsed_time_in_ms)
+
+
+def _intersects_with_right_x(platform: Platform, wall: Wall) -> bool:
+    return (
+        platform.bottom_right.x >= wall.top_left.x
+        and platform.top_left.x < wall.top_left.x
+    )
+
+
+def _intersects_with_left_x(platform: Platform, wall: Wall) -> bool:
+    return (
+        platform.top_left.x <= wall.bottom_right.x
+        and platform.bottom_right.x > wall.bottom_right.x
+    )
+
+
+def _put_before_intersects_with_right_x(platform: Platform, wall: Wall):
+    platform.top_left.x = wall.top_left.x - platform.width
+
+
+def _put_before_intersects_with_left_x(platform: Platform, wall: Wall):
+    platform.top_left.x = wall.bottom_right.x
