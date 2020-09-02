@@ -31,6 +31,7 @@ def reflect_from_platform(ball: Ball, platform: Platform) -> bool:
     if intersection == _Intersection.NONE:
         return False
     _reflect_from_single_object(ball, platform, intersection)
+    ball.angle = _clamp_angle(ball.angle)
     return True
 
 
