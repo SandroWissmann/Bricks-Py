@@ -16,28 +16,29 @@ import pytest
 
 class TestPhysics:
     @pytest.mark.parametrize(
-        "ball_top_left, ball_angle, ball_result_top_left, ball_result_angle",
+        "ball_top_left, ball_angle, ball_result_top_left, ball_result_angle, "
+        "hit_objects_count",
         [
-            (Point(1.0, 0.0), 30.0, Point(0.0, 0.0), 150.0,),
-            (Point(1.0, 3.0), 30.0, Point(0.0, 3.0), 150.0,),
-            (Point(1.0, 6.0), 30.0, Point(0.0, 6.0), 150.0,),
-            (Point(1.0, 8.0), 30.0, Point(0.0, 8.0), 150.0,),
-            (Point(1.0, 11.0), 30.0, Point(0.0, 11.0), 150.0,),
-            (Point(1.0, 0.0), 330.0, Point(0.0, 0.0), 210.0,),
-            (Point(1.0, 3.0), 330.0, Point(0.0, 3.0), 210.0,),
-            (Point(1.0, 6.0), 330.0, Point(0.0, 6.0), 210.0,),
-            (Point(1.0, 8.0), 330.0, Point(0.0, 8.0), 210.0,),
-            (Point(1.0, 11.0), 330.0, Point(0.0, 11.0), 210.0,),
-            (Point(6.0, 0.0), 150.0, Point(7.0, 0.0), 30.0,),
-            (Point(6.0, 3.0), 150.0, Point(7.0, 3.0), 30.0,),
-            (Point(6.0, 6.0), 150.0, Point(7.0, 6.0), 30.0,),
-            (Point(6.0, 8.0), 150.0, Point(7.0, 8.0), 30.0,),
-            (Point(6.0, 11.0), 150.0, Point(7.0, 11.0), 30.0,),
-            (Point(6.0, 0.0), 210.0, Point(7.0, 0.0), 330.0,),
-            (Point(6.0, 3.0), 210.0, Point(7.0, 3.0), 330.0,),
-            (Point(6.0, 6.0), 210.0, Point(7.0, 6.0), 330.0,),
-            (Point(6.0, 8.0), 210.0, Point(7.0, 8.0), 330.0,),
-            (Point(6.0, 11.0), 210.0, Point(7.0, 11.0), 330.0,),
+            (Point(1.0, 0.0), 30.0, Point(0.0, 0.0), 150.0, 1),
+            (Point(1.0, 3.0), 30.0, Point(0.0, 3.0), 150.0, 2),
+            (Point(1.0, 6.0), 30.0, Point(0.0, 6.0), 150.0, 1),
+            (Point(1.0, 8.0), 30.0, Point(0.0, 8.0), 150.0, 2),
+            (Point(1.0, 11.0), 30.0, Point(0.0, 11.0), 150.0, 1),
+            (Point(1.0, 0.0), 330.0, Point(0.0, 0.0), 210.0, 1),
+            (Point(1.0, 3.0), 330.0, Point(0.0, 3.0), 210.0, 2),
+            (Point(1.0, 6.0), 330.0, Point(0.0, 6.0), 210.0, 1),
+            (Point(1.0, 8.0), 330.0, Point(0.0, 8.0), 210.0, 2),
+            (Point(1.0, 11.0), 330.0, Point(0.0, 11.0), 210.0, 1),
+            (Point(6.0, 0.0), 150.0, Point(7.0, 0.0), 30.0, 1),
+            (Point(6.0, 3.0), 150.0, Point(7.0, 3.0), 30.0, 2),
+            (Point(6.0, 6.0), 150.0, Point(7.0, 6.0), 30.0, 1),
+            (Point(6.0, 8.0), 150.0, Point(7.0, 8.0), 30.0, 2),
+            (Point(6.0, 11.0), 150.0, Point(7.0, 11.0), 30.0, 1),
+            (Point(6.0, 0.0), 210.0, Point(7.0, 0.0), 330.0, 1),
+            (Point(6.0, 3.0), 210.0, Point(7.0, 3.0), 330.0, 2),
+            (Point(6.0, 6.0), 210.0, Point(7.0, 6.0), 330.0, 1),
+            (Point(6.0, 8.0), 210.0, Point(7.0, 8.0), 330.0, 2),
+            (Point(6.0, 11.0), 210.0, Point(7.0, 11.0), 330.0, 1),
         ],
     )
     def test_reflect_horizontal(
@@ -46,11 +47,12 @@ class TestPhysics:
         ball_angle: float,
         ball_result_top_left: Point,
         ball_result_angle: float,
+        hit_objects_count: int,
     ):
         ball = Ball(
             top_left=ball_top_left,
             width=3.0,
-            height=3.0,
+            height=2.5,
             velocity=1.0,
             angle=Angle(deg2rad(ball_angle)),
         )
@@ -61,36 +63,37 @@ class TestPhysics:
             Brick(top_left=Point(3.0, 9.0), width=4.0, height=4.0),
         ]
 
-        result = reflect_from_game_objects(ball, bricks)
+        hit_objects = reflect_from_game_objects(ball, bricks)
 
-        assert result == True
+        assert len(hit_objects) == hit_objects_count
         assert ball.top_left.x == ball_result_top_left.x
         assert ball.top_left.y == ball_result_top_left.y
         assert ball.angle.value == approx(deg2rad(ball_result_angle))
 
     @pytest.mark.parametrize(
-        "ball_top_left, ball_angle, ball_result_top_left, ball_result_angle",
+        "ball_top_left, ball_angle, ball_result_top_left, ball_result_angle, "
+        "hit_objects_count",
         [
-            (Point(0.0, 1.0), 30.0, Point(0.0, 0.0), 330.0,),
-            (Point(3.0, 1.0), 30.0, Point(3.0, 0.0), 330.0,),
-            (Point(6.0, 1.0), 30.0, Point(6.0, 0.0), 330.0,),
-            (Point(8.0, 1.0), 30.0, Point(8.0, 0.0), 330.0,),
-            (Point(11.0, 1.0), 30.0, Point(11.0, 0.0), 330.0,),
-            (Point(0.0, 1.0), 150.0, Point(0.0, 0.0), 210.0,),
-            (Point(3.0, 1.0), 150.0, Point(3.0, 0.0), 210.0,),
-            (Point(6.0, 1.0), 150.0, Point(6.0, 0.0), 210.0,),
-            (Point(8.0, 1.0), 150.0, Point(8.0, 0.0), 210.0,),
-            (Point(11.0, 1.0), 150.0, Point(11.0, 0.0), 210.0,),
-            (Point(0.0, 6.0), 330.0, Point(0.0, 7.0), 30.0,),
-            (Point(3.0, 6.0), 330.0, Point(3.0, 7.0), 30.0,),
-            (Point(6.0, 6.0), 330.0, Point(6.0, 7.0), 30.0,),
-            (Point(8.0, 6.0), 330.0, Point(8.0, 7.0), 30.0,),
-            (Point(11.0, 6.0), 330.0, Point(11.0, 7.0), 30.0,),
-            (Point(0.0, 6.0), 210.0, Point(0.0, 7.0), 150.0,),
-            (Point(3.0, 6.0), 210.0, Point(3.0, 7.0), 150.0,),
-            (Point(6.0, 6.0), 210.0, Point(6.0, 7.0), 150.0,),
-            (Point(8.0, 6.0), 210.0, Point(8.0, 7.0), 150.0,),
-            (Point(11.0, 6.0), 210.0, Point(11.0, 7.0), 150.0,),
+            (Point(0.0, 1.0), 30.0, Point(0.0, 0.0), 330.0, 1),
+            (Point(3.0, 1.0), 30.0, Point(3.0, 0.0), 330.0, 2),
+            (Point(6.0, 1.0), 30.0, Point(6.0, 0.0), 330.0, 1),
+            (Point(8.0, 1.0), 30.0, Point(8.0, 0.0), 330.0, 2),
+            (Point(11.0, 1.0), 30.0, Point(11.0, 0.0), 330.0, 1),
+            (Point(0.0, 1.0), 150.0, Point(0.0, 0.0), 210.0, 1),
+            (Point(3.0, 1.0), 150.0, Point(3.0, 0.0), 210.0, 2),
+            (Point(6.0, 1.0), 150.0, Point(6.0, 0.0), 210.0, 1),
+            (Point(8.0, 1.0), 150.0, Point(8.0, 0.0), 210.0, 2),
+            (Point(11.0, 1.0), 150.0, Point(11.0, 0.0), 210.0, 1),
+            (Point(0.0, 6.0), 330.0, Point(0.0, 7.0), 30.0, 1),
+            (Point(3.0, 6.0), 330.0, Point(3.0, 7.0), 30.0, 2),
+            (Point(6.0, 6.0), 330.0, Point(6.0, 7.0), 30.0, 1),
+            (Point(8.0, 6.0), 330.0, Point(8.0, 7.0), 30.0, 2),
+            (Point(11.0, 6.0), 330.0, Point(11.0, 7.0), 30.0, 1),
+            (Point(0.0, 6.0), 210.0, Point(0.0, 7.0), 150.0, 1),
+            (Point(3.0, 6.0), 210.0, Point(3.0, 7.0), 150.0, 2),
+            (Point(6.0, 6.0), 210.0, Point(6.0, 7.0), 150.0, 1),
+            (Point(8.0, 6.0), 210.0, Point(8.0, 7.0), 150.0, 2),
+            (Point(11.0, 6.0), 210.0, Point(11.0, 7.0), 150.0, 1),
         ],
     )
     def test_reflect_vertical(
@@ -99,10 +102,11 @@ class TestPhysics:
         ball_angle: float,
         ball_result_top_left: Point,
         ball_result_angle: float,
+        hit_objects_count: int,
     ):
         ball = Ball(
             top_left=ball_top_left,
-            width=3.0,
+            width=2.5,
             height=3.0,
             velocity=1.0,
             angle=Angle(deg2rad(ball_angle)),
@@ -114,9 +118,182 @@ class TestPhysics:
             Brick(top_left=Point(9.0, 3.0), width=4.0, height=4.0),
         ]
 
-        result = reflect_from_game_objects(ball, bricks)
+        hit_objects = reflect_from_game_objects(ball, bricks)
 
-        assert result == True
+        assert len(hit_objects) == hit_objects_count
+        assert ball.top_left.x == ball_result_top_left.x
+        assert ball.top_left.y == ball_result_top_left.y
+        assert ball.angle.value == approx(deg2rad(ball_result_angle))
+
+    @pytest.mark.parametrize(
+        "brick1_top_left, brick2_top_left, ball_top_left, ball_angle, "
+        "ball_result_top_left, ball_result_angle",
+        [
+            (
+                Point(2.0, 0.0),
+                Point(0.0, 0.0),
+                Point(1.0, 1.0),
+                225.0,
+                Point(2.0, 2.0),
+                45.0,
+            ),
+            (
+                Point(0.0, 0.0),
+                Point(0.0, 2.0),
+                Point(1.0, 1.0),
+                225.0,
+                Point(2.0, 2.0),
+                45.0,
+            ),
+            (
+                Point(0.0, 0.0),
+                Point(6.0, 0.0),
+                Point(5.0, 1.0),
+                315.0,
+                Point(4.0, 2.0),
+                135.0,
+            ),
+            (
+                Point(0.0, 0.0),
+                Point(4.0, 2.0),
+                Point(3.0, 1.0),
+                315.0,
+                Point(2.0, 2.0),
+                135.0,
+            ),
+            (
+                Point(0.0, 6.0),
+                Point(0.0, 0.0),
+                Point(1.0, 5.0),
+                135.0,
+                Point(2.0, 4.0),
+                315.0,
+            ),
+            (
+                Point(2.0, 4.0),
+                Point(0.0, 0.0),
+                Point(1.0, 3.0),
+                135.0,
+                Point(2.0, 2.0),
+                315.0,
+            ),
+            (
+                Point(0.0, 6.0),
+                Point(4.0, 0.0),
+                Point(3.0, 5.0),
+                45.0,
+                Point(2.0, 4.0),
+                225.0,
+            ),
+            (
+                Point(0.0, 4.0),
+                Point(6.0, 0.0),
+                Point(5.0, 3.0),
+                45.0,
+                Point(4.0, 2.0),
+                225.0,
+            ),
+        ],
+    )
+    def test_reflect_from_two_objects_with_straight_and_corner(
+        self,
+        brick1_top_left: Point,
+        brick2_top_left: Point,
+        ball_top_left: Point,
+        ball_angle: float,
+        ball_result_top_left: Point,
+        ball_result_angle: float,
+    ):
+
+        ball = Ball(
+            top_left=ball_top_left,
+            width=2.0,
+            height=2.0,
+            velocity=1.0,
+            angle=Angle(deg2rad(ball_angle)),
+        )
+
+        bricks = [
+            Brick(top_left=brick1_top_left, width=6.0, height=2.0),
+            Brick(top_left=brick2_top_left, width=2.0, height=6.0),
+        ]
+
+        hit_objects = reflect_from_game_objects(ball, bricks)
+
+        assert len(hit_objects) == 2
+        assert ball.top_left.x == ball_result_top_left.x
+        assert ball.top_left.y == ball_result_top_left.y
+        assert ball.angle.value == approx(deg2rad(ball_result_angle))
+
+    @pytest.mark.parametrize(
+        "brick1_top_left, brick2_top_left, brick3_top_left, ball_top_left, "
+        "ball_angle, ball_result_top_left, ball_result_angle",
+        [
+            (
+                Point(0.0, 3.0),
+                Point(3.0, 3.0),
+                Point(3.0, 0.0),
+                Point(2.0, 2.0),
+                45.0,
+                Point(1.0, 1.0),
+                225.0,
+            ),
+            (
+                Point(3.0, 3.0),
+                Point(0.0, 3.0),
+                Point(0.0, 0.0),
+                Point(2.0, 2.0),
+                135.0,
+                Point(3.0, 1.0),
+                315.0,
+            ),
+            (
+                Point(0.0, 0.0),
+                Point(3.0, 0.0),
+                Point(3.0, 3.0),
+                Point(2.0, 2.0),
+                315.0,
+                Point(1.0, 3.0),
+                135.0,
+            ),
+            (
+                Point(0.0, 3.0),
+                Point(0.0, 0.0),
+                Point(3.0, 0.0),
+                Point(2.0, 2.0),
+                225.0,
+                Point(3.0, 3.0),
+                45.0,
+            ),
+        ],
+    )
+    def test_reflect_from_three_objects_in_corner(
+        self,
+        brick1_top_left: Point,
+        brick2_top_left: Point,
+        brick3_top_left: Point,
+        ball_top_left: Point,
+        ball_angle: float,
+        ball_result_top_left: Point,
+        ball_result_angle: float,
+    ):
+        ball = Ball(
+            top_left=ball_top_left,
+            width=2.0,
+            height=2.0,
+            velocity=1.0,
+            angle=Angle(deg2rad(ball_angle)),
+        )
+
+        bricks = [
+            Brick(top_left=brick1_top_left, width=3.0, height=3.0),
+            Brick(top_left=brick2_top_left, width=3.0, height=3.0),
+            Brick(top_left=brick3_top_left, width=3.0, height=3.0),
+        ]
+
+        hit_objects = reflect_from_game_objects(ball, bricks)
+
+        assert len(hit_objects) == 3
         assert ball.top_left.x == ball_result_top_left.x
         assert ball.top_left.y == ball_result_top_left.y
         assert ball.angle.value == approx(deg2rad(ball_result_angle))
