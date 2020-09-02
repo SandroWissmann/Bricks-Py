@@ -1,3 +1,6 @@
+"""Representation of the ball on the game board."""
+
+
 from bricks.game_objects.moveable_game_objects import MoveableGameObject
 from bricks.types.angle import Angle
 from bricks.types.angle import Quadrant
@@ -11,6 +14,39 @@ from numpy import deg2rad
 
 
 class Ball(MoveableGameObject):
+    """
+    Representation of the Ball on the game board.
+
+    Attributes
+    ----------
+    top_left: Point
+        Top left coordinate of the ball.
+    top_right: Point
+        Top right coordinate of the ball.
+    bottom_left: Point
+        Bottom left coordinate of the ball.
+    bottom_right: Point
+        Bottom right coordinate of the ball.
+    width: float
+        Width of the ball.
+    height: float
+        Height of the ball.
+    velocity: float
+        Velocity of the ball.
+    angle: Angle
+        Direction of were the ball moves.
+    gravity: float
+        Gravity which acts on the ball.
+    is_active: bool
+        flag to pause the movement of the ball.
+
+    Methods
+    -------
+    move(self, elapsed_time_in_ms: float):
+        Calculates the movement of the ball. 
+
+    """
+
     def __init__(
         self,
         top_left: Point = Point(0.0, 0.0),
@@ -50,6 +86,10 @@ class Ball(MoveableGameObject):
         self._is_active = is_active
 
     def move(self, elapsed_time_in_ms: float):
+        """
+        Calculates were the ball moves in a timeframe.
+        Considers velocity and gravity for calculation.
+        """
         if not self._is_active:
             return
 
