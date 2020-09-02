@@ -1,13 +1,38 @@
+"""Bass class for all objects on the game board."""
 from bricks.types.point import Point
 
 
 class GameObject:
+    """
+    Bass class for all objects on the game board.
+    Abstract class only to be used with inheritance.
+    
+    Attributes
+    ----------
+    top_left: Point
+        Top left coordinate of the game object.
+    top_right: Point
+        Top right coordinate of the game object.
+    bottom_left: Point
+        Bottom left coordinate of the game object.
+    bottom_right: Point
+        Bottom right coordinate of the game object.
+    width: float
+        Width of the game object.
+    height: float
+        Height of the game object.
+    """
+
     def __init__(
         self,
         top_left: Point = Point(0.0, 0.0),
         width: float = 0.0,
         height: float = 0.0,
     ):
+        """
+        Raises ValueError if height, width or top left contain negative values.
+        Raises Exception on direct use as GameObject.
+        """
         if type(self) is GameObject:
             raise Exception(
                 "GameObject is an abstract class and cannot be instantiated "
