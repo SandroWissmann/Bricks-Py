@@ -827,5 +827,5 @@ def _random(minimum: float, maximum: float) -> float:
     return uniform(minimum, maximum)
 
 
-def _clamp(minimum, x, maximum) -> float:
+def _clamp(minimum: float x: float, maximum: float) -> float:
     return max(minimum, min(x, maximum))
