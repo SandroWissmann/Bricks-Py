@@ -1,3 +1,5 @@
+"""Representation of an Angle from 0 - 360 degree."""
+
 from enum import IntEnum
 from numpy import deg2rad
 
@@ -10,7 +12,29 @@ class Quadrant(IntEnum):
 
 
 class Angle:
+    """
+    Representation of an Angle in cartesian coordinate system.
+
+    Attributes
+    ----------
+    value : float 
+        Angle in rad. 
+        Range between 0 and 2PI. Values > 2*pi get subtracted by -2*pi
+    quadrant : Quadrant
+        Which Quadrant the angle is located
+    quadrant_angle: float
+        Quadrant angle in rad
+
+    Methods
+    -------
+    mirror_horizontal(self):
+        Mirrors the angle on the horizontal axis
+    mirror_vertical(self):
+        Mirrors the angle on the vertical axis
+    """
+
     def __init__(self, angle: float = 0.0):
+        """Stores the angle as quadrant + quadrant angle"""
         self.quadrant = _calc_quadrant(angle)
         self.quadrant_angle = _angle_to_quadrant_angle(angle, self.quadrant)
 
@@ -42,6 +66,7 @@ class Angle:
         self._quadrant_angle = quadrant_angle
 
     def mirror_horizontal(self):
+        """Mirrors the angle on the horizontal axis"""
         if self.quadrant == Quadrant.I:
             self.quadrant = Quadrant.IV
         elif self.quadrant == Quadrant.II:
@@ -53,6 +78,7 @@ class Angle:
         self.quadrant_angle = _mirror_quadrant_angle(self.quadrant_angle)
 
     def mirror_vertical(self):
+        """Mirrors the angle on the vertical axis"""
         if self.quadrant == Quadrant.I:
             self.quadrant = Quadrant.II
         elif self.quadrant == Quadrant.II:
@@ -64,7 +90,7 @@ class Angle:
         self.quadrant_angle = _mirror_quadrant_angle(self.quadrant_angle)
 
 
-def _clamp(minimum, x, maximum):
+def _clamp(minimum: float, x: float, maximum: float) -> float:
     return max(minimum, min(x, maximum))
 
 
