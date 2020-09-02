@@ -29,7 +29,7 @@ class Angle:
         return self._quadrant_angle
 
     @quadrant_angle.setter
-    def quadrant_angle(self, quadrant_angle: float) -> float:
+    def quadrant_angle(self, quadrant_angle: float):
         if quadrant_angle < deg2rad(0.0) or quadrant_angle > deg2rad(90.0):
             print(
                 "class Angle: def set_quadrant_angle(self, quadrant_angle):\n"
@@ -72,7 +72,7 @@ def _mirror_quadrant_angle(quadrant_angle: float) -> float:
     return deg2rad(90.0) - quadrant_angle
 
 
-def _calc_quadrant(angle: float) -> float:
+def _calc_quadrant(angle: float) -> Quadrant:
     assert deg2rad(0.0) <= angle <= deg2rad(360.0)
 
     if _is_in_quadrant_I(angle):
@@ -83,6 +83,8 @@ def _calc_quadrant(angle: float) -> float:
         return Quadrant.III
     if _is_in_quadrant_IV(angle):
         return Quadrant.IV
+    assert True == False
+    return Quadrant.I
 
 
 def _is_in_quadrant_I(angle: float) -> float:
