@@ -146,19 +146,19 @@ def _get_intersection(ball: Ball, obj: GameObject) -> _Intersection:
         top_left_2=obj.top_left,
     ):
         intersections.append(_Intersection.BOTTOM_RIGHT)
-    elif _top_right_intersects_with_bottom_left(
+    if _top_right_intersects_with_bottom_left(
         top_right_1=ball.top_right,
         bottom_left_2=obj.bottom_left,
         top_right_2=obj.top_right,
     ):
         intersections.append(_Intersection.BOTTOM_LEFT)
-    elif _bottom_left_intersects_with_top_right(
+    if _bottom_left_intersects_with_top_right(
         bottom_left_1=ball.bottom_left,
         top_right_2=obj.top_right,
         bottom_left_2=obj.bottom_left,
     ):
         intersections.append(_Intersection.TOP_RIGHT)
-    elif _bottom_right_intersects_with_top_left(
+    if _bottom_right_intersects_with_top_left(
         bottom_right_1=ball.bottom_right,
         top_left_2=obj.top_left,
         bottom_right_2=obj.bottom_right,
@@ -298,6 +298,19 @@ def _reflect_from_multiple_objects(
     object_intersection_pairs=List[Tuple[GameObject, _Intersection]],
 ):
     assert len(object_intersection_pairs) > 1
+
+    if len(object_intersection_pairs) == 2:
+        if _reflect_from_two_objects_in_corner(
+            ball, object_intersection_pairs
+        ):
+            return
+
+    if len(object_intersection_pairs) == 3:
+        if _reflect_from_three_objects_in_corner(
+            ball, object_intersection_pairs
+        ):
+            return
+
     if _intersects_from_left_with_multi_objects(object_intersection_pairs):
         _reflect_from_collision_with_left(
             ball, object_intersection_pairs[0][0]
@@ -312,6 +325,304 @@ def _reflect_from_multiple_objects(
         _reflect_from_collision_with_bottom(
             ball, object_intersection_pairs[0][0]
         )
+
+
+def _reflect_from_two_objects_in_corner(
+    ball: Ball,
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]],
+) -> bool:
+    if _intersects_in_top_left_corner_with_two_objects(
+        object_intersection_pairs
+    ):
+        _put_before_intersects_with_top_left_corner(
+            ball, object_intersection_pairs
+        )
+        ball.angle.value -= deg2rad(180)
+        return True
+    if _intersects_in_top_right_corner_with_two_objects(
+        object_intersection_pairs
+    ):
+        _put_before_intersects_with_top_right_corner(
+            ball, object_intersection_pairs
+        )
+        ball.angle.value -= deg2rad(180)
+        return True
+    if _intersects_in_bottom_right_corner_with_two_objects(
+        object_intersection_pairs
+    ):
+        _put_before_intersects_with_bottom_right_corner(
+            ball, object_intersection_pairs
+        )
+        ball.angle.value += deg2rad(180)
+        return True
+    if _intersects_in_bottom_left_corner_with_two_objects(
+        object_intersection_pairs
+    ):
+        _put_before_intersects_with_bottom_left_corner(
+            ball, object_intersection_pairs
+        )
+        ball.angle.value += deg2rad(180)
+        return True
+    return False
+
+
+def _reflect_from_three_objects_in_corner(
+    ball: Ball,
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]],
+) -> bool:
+    if _intersects_in_top_left_corner_with_three_objects(
+        object_intersection_pairs
+    ):
+        _put_before_intersects_with_top_left_corner(
+            ball, object_intersection_pairs
+        )
+        ball.angle.value -= deg2rad(180)
+        return True
+    if _intersects_in_top_right_corner_with_three_objects(
+        object_intersection_pairs
+    ):
+        _put_before_intersects_with_top_right_corner(
+            ball, object_intersection_pairs
+        )
+        ball.angle.value -= deg2rad(180)
+        return True
+    if _intersects_in_bottom_right_corner_with_three_objects(
+        object_intersection_pairs
+    ):
+        _put_before_intersects_with_bottom_right_corner(
+            ball, object_intersection_pairs
+        )
+        ball.angle.value += deg2rad(180)
+        return True
+    if _intersects_in_bottom_left_corner_with_three_objects(
+        object_intersection_pairs
+    ):
+        _put_before_intersects_with_bottom_left_corner(
+            ball, object_intersection_pairs
+        )
+        ball.angle.value += deg2rad(180)
+        return True
+    return False
+
+
+def _intersects_in_top_left_corner_with_two_objects(
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
+) -> bool:
+    intersections = [x[1] for x in object_intersection_pairs]
+    variant1 = all(
+        x in intersections
+        for x in [_Intersection.RIGHT, _Intersection.BOTTOM_LEFT]
+    )
+    variant2 = all(
+        x in intersections
+        for x in [_Intersection.TOP_RIGHT, _Intersection.BOTTOM]
+    )
+    return variant1 or variant2
+
+
+def _intersects_in_top_left_corner_with_three_objects(
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
+) -> bool:
+    intersections = [x[1] for x in object_intersection_pairs]
+    return all(
+        x in intersections
+        for x in [
+            _Intersection.BOTTOM_LEFT,
+            _Intersection.BOTTOM_RIGHT,
+            _Intersection.TOP_RIGHT,
+        ]
+    )
+
+
+def _put_before_intersects_with_top_left_corner(
+    ball: Ball,
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]],
+):
+    for object_intersection_pair in object_intersection_pairs:
+        intersection = object_intersection_pair[1]
+        if (
+            intersection == _Intersection.BOTTOM_LEFT
+            or intersection == _Intersection.BOTTOM
+        ):
+            _put_before_intersects_with_top_y(
+                ball, object_intersection_pair[0]
+            )
+        elif intersection == _Intersection.BOTTOM_RIGHT:
+            pass
+        elif (
+            intersection == _Intersection.TOP_RIGHT
+            or intersection == _Intersection.RIGHT
+        ):
+            _put_before_intersects_with_left_x(
+                ball, object_intersection_pair[0]
+            )
+        else:
+            assert True == False
+
+
+def _intersects_in_top_right_corner_with_two_objects(
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
+) -> bool:
+    intersections = [x[1] for x in object_intersection_pairs]
+    variant1 = all(
+        x in intersections
+        for x in [_Intersection.BOTTOM_RIGHT, _Intersection.LEFT]
+    )
+    variant2 = all(
+        x in intersections
+        for x in [_Intersection.BOTTOM, _Intersection.TOP_LEFT]
+    )
+    return variant1 or variant2
+
+
+def _intersects_in_top_right_corner_with_three_objects(
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
+) -> bool:
+    intersections = [x[1] for x in object_intersection_pairs]
+    return all(
+        x in intersections
+        for x in [
+            _Intersection.BOTTOM_RIGHT,
+            _Intersection.BOTTOM_LEFT,
+            _Intersection.TOP_LEFT,
+        ]
+    )
+
+
+def _put_before_intersects_with_top_right_corner(
+    ball: Ball,
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]],
+):
+    for object_intersection_pair in object_intersection_pairs:
+        intersection = object_intersection_pair[1]
+        if (
+            intersection == _Intersection.BOTTOM_RIGHT
+            or intersection == _Intersection.BOTTOM
+        ):
+            _put_before_intersects_with_top_y(
+                ball, object_intersection_pair[0]
+            )
+        elif intersection == _Intersection.BOTTOM_LEFT:
+            pass
+        elif (
+            intersection == _Intersection.TOP_LEFT
+            or intersection == _Intersection.LEFT
+        ):
+            _put_before_intersects_with_right_x(
+                ball, object_intersection_pair[0]
+            )
+        else:
+            assert True == False
+
+
+def _intersects_in_bottom_right_corner_with_two_objects(
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
+) -> bool:
+    intersections = [x[1] for x in object_intersection_pairs]
+    variant1 = all(
+        x in intersections
+        for x in [_Intersection.TOP, _Intersection.BOTTOM_LEFT]
+    )
+    variant2 = all(
+        x in intersections
+        for x in [_Intersection.LEFT, _Intersection.TOP_RIGHT]
+    )
+    return variant1 or variant2
+
+
+def _intersects_in_bottom_right_corner_with_three_objects(
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
+) -> bool:
+    intersections = [x[1] for x in object_intersection_pairs]
+    return all(
+        x in intersections
+        for x in [
+            _Intersection.TOP_RIGHT,
+            _Intersection.TOP_LEFT,
+            _Intersection.BOTTOM_LEFT,
+        ]
+    )
+
+
+def _put_before_intersects_with_bottom_right_corner(
+    ball: Ball,
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]],
+):
+    for object_intersection_pair in object_intersection_pairs:
+        intersection = object_intersection_pair[1]
+        if (
+            intersection == _Intersection.TOP_RIGHT
+            or intersection == _Intersection.TOP
+        ):
+            _put_before_intersects_with_bottom_y(
+                ball, object_intersection_pair[0]
+            )
+        elif intersection == _Intersection.TOP_LEFT:
+            pass
+        elif (
+            intersection == _Intersection.BOTTOM_LEFT
+            or intersection == _Intersection.LEFT
+        ):
+            _put_before_intersects_with_right_x(
+                ball, object_intersection_pair[0]
+            )
+        else:
+            assert True == False
+
+
+def _intersects_in_bottom_left_corner_with_two_objects(
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
+) -> bool:
+    intersections = [x[1] for x in object_intersection_pairs]
+    variant1 = all(
+        x in intersections
+        for x in [_Intersection.TOP, _Intersection.BOTTOM_RIGHT]
+    )
+    variant2 = all(
+        x in intersections
+        for x in [_Intersection.TOP_LEFT, _Intersection.RIGHT]
+    )
+    return variant1 or variant2
+
+
+def _intersects_in_bottom_left_corner_with_three_objects(
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]]
+) -> bool:
+    intersections = [x[1] for x in object_intersection_pairs]
+    return all(
+        x in intersections
+        for x in [
+            _Intersection.TOP_LEFT,
+            _Intersection.TOP_RIGHT,
+            _Intersection.BOTTOM_RIGHT,
+        ]
+    )
+
+
+def _put_before_intersects_with_bottom_left_corner(
+    ball: Ball,
+    object_intersection_pairs=List[Tuple[GameObject, _Intersection]],
+):
+    for object_intersection_pair in object_intersection_pairs:
+        intersection = object_intersection_pair[1]
+        if (
+            intersection == _Intersection.TOP_LEFT
+            or intersection == _Intersection.TOP
+        ):
+            _put_before_intersects_with_bottom_y(
+                ball, object_intersection_pair[0]
+            )
+        elif intersection == _Intersection.TOP_RIGHT:
+            pass
+        elif (
+            intersection == _Intersection.BOTTOM_RIGHT
+            or intersection == _Intersection.RIGHT
+        ):
+            _put_before_intersects_with_left_x(
+                ball, object_intersection_pair[0]
+            )
+        else:
+            assert True == False
 
 
 def _intersects_from_left_with_multi_objects(
