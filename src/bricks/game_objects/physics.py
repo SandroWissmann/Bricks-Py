@@ -30,45 +30,8 @@ def reflect_from_platform(ball: Ball, platform: Platform) -> bool:
     intersection = _get_intersection(ball, platform)
     if intersection == _Intersection.NONE:
         return False
-    _reflect_from_platform(ball, platform, intersection)
+    _reflect_from_single_object(ball, platform, intersection)
     return True
-
-
-def _reflect_from_platform(
-    ball: Ball, platform: Platform, intersection: _Intersection
-):
-    if intersection == _Intersection.LEFT:
-        _reflect_from_collision_with_left(ball, platform)
-    elif intersection == _Intersection.TOP_LEFT:
-        if _intersection_is_more_left_than_top(ball, platform):
-            _reflect_from_collision_with_left(ball, platform)
-        else:
-            _reflect_from_collision_with_top_relative_to_positon(
-                ball, platform
-            )
-    elif intersection == _Intersection.TOP:
-        _reflect_from_collision_with_top_relative_to_positon(ball, platform)
-    elif intersection == _Intersection.TOP_RIGHT:
-        if _intersection_is_more_top_than_right(ball, platform):
-            _reflect_from_collision_with_top_relative_to_positon(
-                ball, platform
-            )
-        else:
-            _reflect_from_collision_with_right(ball, platform)
-    elif intersection == _Intersection.RIGHT:
-        _reflect_from_collision_with_right(ball, platform)
-    elif intersection == _Intersection.BOTTOM_RIGHT:
-        if _intersection_is_more_right_than_bottom(ball, platform):
-            _reflect_from_collision_with_right(ball, platform)
-        else:
-            _reflect_from_collision_with_bottom(ball, platform)
-    elif intersection == _Intersection.BOTTOM:
-        _reflect_from_collision_with_bottom(ball, platform)
-    elif intersection == _Intersection.BOTTOM_LEFT:
-        if _intersection_is_more_bottom_than_left(ball, platform):
-            _reflect_from_collision_with_bottom(ball, platform)
-        else:
-            _reflect_from_collision_with_left(ball, platform)
 
 
 def _reflect_from_collision_with_top_relative_to_positon(ball, platform):
@@ -291,12 +254,27 @@ def _reflect_from_single_object(
         if _intersection_is_more_left_than_top(ball, game_object):
             _reflect_from_collision_with_left(ball, game_object)
         else:
-            _reflect_from_collision_with_top(ball, game_object)
+            if isinstance(game_object, Platform):
+                _reflect_from_collision_with_top_relative_to_positon(
+                    ball, game_object
+                )
+            else:
+                _reflect_from_collision_with_top(ball, game_object)
     elif intersection == _Intersection.TOP:
-        _reflect_from_collision_with_top(ball, game_object)
+        if isinstance(game_object, Platform):
+            _reflect_from_collision_with_top_relative_to_positon(
+                ball, game_object
+            )
+        else:
+            _reflect_from_collision_with_top(ball, game_object)
     elif intersection == _Intersection.TOP_RIGHT:
         if _intersection_is_more_top_than_right(ball, game_object):
-            _reflect_from_collision_with_top(ball, game_object)
+            if isinstance(game_object, Platform):
+                _reflect_from_collision_with_top_relative_to_positon(
+                    ball, game_object
+                )
+            else:
+                _reflect_from_collision_with_top(ball, game_object)
         else:
             _reflect_from_collision_with_right(ball, game_object)
     elif intersection == _Intersection.RIGHT:
