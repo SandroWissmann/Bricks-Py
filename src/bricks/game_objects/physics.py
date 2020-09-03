@@ -35,64 +35,6 @@ def reflect_from_platform(ball: Ball, platform: Platform) -> bool:
     return True
 
 
-def _reflect_from_collision_with_top_relative_to_positon(ball, platform):
-    assert ball.angle.quadrant != Quadrant.III
-    assert ball.angle.quadrant != Quadrant.IV
-
-    if ball.angle.quadrant == Quadrant.I:
-        _reflect_horizontal_I_to_IV(ball, platform)
-        _put_before_intersects_with_bottom_y(ball, platform)
-    elif ball.angle.quadrant == Quadrant.II:
-        _reflect_horizontal_II_to_III(ball, platform)
-        _put_before_intersects_with_bottom_y(ball, platform)
-
-
-def _reflect_horizontal_I_to_IV(ball: Ball, platform: Platform):
-    x_right = platform.bottom_right.x
-    x_left = platform.top_left.x
-    x_center = x_right - (platform.width / 2.0)
-    x_ball = ball.bottom_right.x
-
-    factor = _calc_angle_factor(x_ball, x_left, x_center, x_right)
-    new_quad_angle = deg2rad(60.0) - (deg2rad(45.0) - deg2rad(45.0) * factor)
-    assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
-
-    ball.angle.mirror_horizontal()
-    ball.angle.quadrant_angle = new_quad_angle
-
-
-def _reflect_horizontal_II_to_III(ball: Ball, platform: Platform):
-    x_right = platform.bottom_right.x
-    x_left = platform.top_left.x
-    x_center = x_left + (platform.width / 2.0)
-    x_ball = ball.top_left.x
-
-    factor = _calc_angle_factor(x_ball, x_left, x_center, x_right)
-    new_quad_angle = deg2rad(30.0) + (deg2rad(45.0) - (deg2rad(45.0) * factor))
-    assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
-
-    ball.angle.mirror_horizontal()
-    ball.angle.quadrant_angle = new_quad_angle
-
-
-def _calc_angle_factor(
-    x_ball: float, x_left: float, x_center: float, x_right: float
-) -> float:
-    assert x_left < x_center
-    assert x_center < x_right
-
-    x_ball = _clamp(x_left, x_ball, x_right)
-
-    length = x_center - x_left
-    if x_ball <= x_center:
-        factor = (x_center - x_ball) / length
-    else:
-        factor = (x_ball - x_center) / length
-    factor = _clamp(0.0, factor, 1.0)
-    assert 0.0 <= factor <= 1.0
-    return factor
-
-
 def reflect_from_game_objects(
     ball: Ball, game_objects: List[GameObject]
 ) -> List[GameObject]:
@@ -708,6 +650,64 @@ def _reflect_from_collision_with_left(ball: Ball, game_object: GameObject):
 def _reflect_from_collision_with_top(ball: Ball, game_object: GameObject):
     _reflect_horizontal(ball)
     _put_before_intersects_with_bottom_y(ball, game_object)
+
+
+def _reflect_from_collision_with_top_relative_to_positon(ball, platform):
+    assert ball.angle.quadrant != Quadrant.III
+    assert ball.angle.quadrant != Quadrant.IV
+
+    if ball.angle.quadrant == Quadrant.I:
+        _reflect_horizontal_I_to_IV(ball, platform)
+        _put_before_intersects_with_bottom_y(ball, platform)
+    elif ball.angle.quadrant == Quadrant.II:
+        _reflect_horizontal_II_to_III(ball, platform)
+        _put_before_intersects_with_bottom_y(ball, platform)
+
+
+def _reflect_horizontal_I_to_IV(ball: Ball, platform: Platform):
+    x_right = platform.bottom_right.x
+    x_left = platform.top_left.x
+    x_center = x_right - (platform.width / 2.0)
+    x_ball = ball.bottom_right.x
+
+    factor = _calc_angle_factor(x_ball, x_left, x_center, x_right)
+    new_quad_angle = deg2rad(60.0) - (deg2rad(45.0) - deg2rad(45.0) * factor)
+    assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
+
+    ball.angle.mirror_horizontal()
+    ball.angle.quadrant_angle = new_quad_angle
+
+
+def _reflect_horizontal_II_to_III(ball: Ball, platform: Platform):
+    x_right = platform.bottom_right.x
+    x_left = platform.top_left.x
+    x_center = x_left + (platform.width / 2.0)
+    x_ball = ball.top_left.x
+
+    factor = _calc_angle_factor(x_ball, x_left, x_center, x_right)
+    new_quad_angle = deg2rad(30.0) + (deg2rad(45.0) - (deg2rad(45.0) * factor))
+    assert deg2rad(0.0) <= new_quad_angle <= deg2rad(90.0)
+
+    ball.angle.mirror_horizontal()
+    ball.angle.quadrant_angle = new_quad_angle
+
+
+def _calc_angle_factor(
+    x_ball: float, x_left: float, x_center: float, x_right: float
+) -> float:
+    assert x_left < x_center
+    assert x_center < x_right
+
+    x_ball = _clamp(x_left, x_ball, x_right)
+
+    length = x_center - x_left
+    if x_ball <= x_center:
+        factor = (x_center - x_ball) / length
+    else:
+        factor = (x_ball - x_center) / length
+    factor = _clamp(0.0, factor, 1.0)
+    assert 0.0 <= factor <= 1.0
+    return factor
 
 
 def _reflect_from_collision_with_right(ball: Ball, game_object: GameObject):
