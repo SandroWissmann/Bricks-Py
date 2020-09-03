@@ -1,3 +1,5 @@
+"""Module to represent the main game logic."""
+
 from bricks.game_objects.ball import Ball
 from bricks.game_objects.brick import Brick
 from bricks.game_objects.game_object import GameObject
@@ -62,6 +64,19 @@ START_LIFES = 5
 
 
 class Game:
+    """
+    Class to represent the main game logic.
+
+    On construction current highscore is loaded from file.
+    On construction the first level is loaded from file.
+
+    Methods
+    -------
+    run(self):
+        Method starts the game with the first level.
+        Runs until the user quits the game.
+    """
+
     def __init__(self, screen_width: int, screen_height: int):
         self._audio_device = AudioDevice()
         self._input_handler = InputHandler()
@@ -93,6 +108,19 @@ class Game:
         )
 
     def run(self):
+        """
+        Method starts the game with the first level.
+        
+        Runs current level until it is beaten or game over occurs.
+        If all levels are beaten starts on the first level with increased
+        difficulty.
+
+        Handles input from user.
+        Checks if bricks get destroyed.
+        Awards score for destroyed bricks.
+        Renders the game on each iteration.
+        Plays appropiated sounds for game situations(e.g. Brick destroyed)
+        """
         while True:
             self._run_level()
             if self._input_handler.is_quit:
