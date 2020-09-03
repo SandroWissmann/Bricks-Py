@@ -1,4 +1,22 @@
+"""Storage of Parameters which can be increased to increase difficulty."""
+
+
 class DifficultyParameters:
+    """
+    Class to store variable parameters for increasing difficulty.
+    
+    Attributes
+    ----------
+    platform_velocity: float
+        Velocity of the platform.
+    platform_width: float
+        Width of the platform.
+    ball_velocity: float
+        Velocity of the ball.
+    bottom_right: Point
+        Gravity of the ball.
+    """
+
     def __init__(
         self,
         platform_velocity: float = 16.0,
