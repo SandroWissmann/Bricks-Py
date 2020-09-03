@@ -98,13 +98,8 @@ class Game:
         self._update_values_in_title_bar()
 
     def _update_values_in_title_bar(self):
-        self._renderer.set_window_title(
-            _make_title(
-                self._current_level_idx,
-                self._lifes,
-                self._score,
-                self._highscore,
-            )
+        self._renderer.window_title = _make_title(
+            self._current_level_idx, self._lifes, self._score, self._highscore,
         )
 
     def run(self):
