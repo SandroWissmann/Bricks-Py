@@ -1,3 +1,4 @@
+"""Module to render level on the screen."""
 from bricks.game_objects.ball import Ball
 from bricks.game_objects.brick import Brick
 from bricks.game_objects.game_object import GameObject
@@ -13,6 +14,23 @@ BLACK = (0, 0, 0)
 
 
 class Renderer:
+    """
+    Class to render level on the screen.
+    Only one instance of the class should be used at the same time.
+
+    Attributes
+    ----------
+    is_paused: bool
+        Indicates if game is in state pause.
+    window_title: str
+        Defines what is shown on the window title screen.
+
+    Mehods
+    ------
+    render(self, level: Level):
+        Renders the level on the screen. 
+    """
+
     def __init__(
         self,
         screen_width: int,
@@ -52,6 +70,10 @@ class Renderer:
         pygame.display.set_caption(window_title)
 
     def render(self, level: Level):
+        """
+        Renders the level on the screen. 
+        Changes color of level to grayscale if paused active.
+        """
         self._clear_screen()
         self._render_ball(level.ball)
         self._render_platform(level.platform)
@@ -63,10 +85,7 @@ class Renderer:
             self._render_brick(brick)
         for indestructible_brick in level.indestructible_bricks:
             self._render_indestructible_brick(indestructible_brick)
-        self.update_screen()
-
-    def set_window_title(self, title: str):
-        pygame.display.set_caption(title)
+        self._update_screen()
 
     def _clear_screen(self):
         white = RGBColor(0x1E, 0x1E, 0x1E)
@@ -75,7 +94,7 @@ class Renderer:
         else:
             self._screen.fill(white.grayscale().as_tuple())
 
-    def update_screen(self):
+    def _update_screen(self):
         pygame.display.update()
 
     def _render_ball(self, ball: Ball):
