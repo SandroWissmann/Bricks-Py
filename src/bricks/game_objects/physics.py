@@ -1,3 +1,20 @@
+"""
+Module to handle the reflections between game objects.
+
+Methods
+-------
+reflect_from_platform(ball: Ball, platform: Platform) -> bool:
+    Checks if ball collides with platform and reflects from if True.
+    Returns True on reflect
+
+reflect_from_game_objects(
+    ball: Ball, game_objects: List[GameObject]
+) -> List[GameObject]:
+    Checks if ball collides with one or more game objects and reflects from
+    them.
+    Returns a list of all the objects hit by the ball.
+    Decreases hitpoints if brick is hit.
+"""
 from bricks.game_objects.ball import Ball
 from bricks.game_objects.platform import Platform
 from bricks.game_objects.brick import Brick
@@ -27,6 +44,13 @@ class _Intersection(Enum):
 
 
 def reflect_from_platform(ball: Ball, platform: Platform) -> bool:
+    """
+    Reflect from platform if ball has hit it.
+    
+    Get intersections with platform.
+    If intersections exists reflect from the platform.
+    Return True to indicate reflection.
+    """
     intersection = _get_intersection(ball, platform)
     if intersection == _Intersection.NONE:
         return False
@@ -38,6 +62,14 @@ def reflect_from_platform(ball: Ball, platform: Platform) -> bool:
 def reflect_from_game_objects(
     ball: Ball, game_objects: List[GameObject]
 ) -> List[GameObject]:
+    """
+    Reflect from game objects if ball has hit them.
+
+    Get intersections with game objects.
+    Reflect from one or several game objects.
+    Return game objects which were hit.
+    If brick was hit decrease hitpoints.
+    """
     object_intersection_pairs = _get_object_intersection_pairs(
         ball, game_objects
     )
