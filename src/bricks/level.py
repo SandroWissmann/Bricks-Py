@@ -1,3 +1,12 @@
+"""
+Representation of a level in the game. 
+
+class Level
+    Contains all objects in the level.
+
+read_level_from_json_file(filename: str) -> Union[Level, None]:
+    Read a level from a JSON File.
+"""
 from bricks.game_objects.game_object import GameObject
 from bricks.game_objects.ball import Ball
 from bricks.game_objects.platform import Platform
@@ -22,6 +31,41 @@ BALL_ANGLE = deg2rad(135.0)
 
 
 class Level:
+    """
+    Class to represent a level in the game.
+
+    Attributes
+    ----------
+
+    difficulty_parameters: DifficultyParameters
+        Parameters which represent the difficulty of the game.
+    grid_width: int
+        Width of the game board.
+    grid_height: int
+        Height of the game board.
+    left_wall: Wall
+        Left wall on the game board.
+    right_wall: Wall
+        Right wall on the game board.    
+    top_wall: Wall
+        Top wall on the game board.
+    platform: Platform
+        Platform on the game board
+    ball: Ball
+        Ball on the game board
+    bricks: List[Brick]
+        Bricks on the game board
+    indestructible_bricks: List[IndestructibleBrick]
+        Indestructible bricks on the game board
+    
+    Methods
+    -------
+    reset_ball(self):
+        Resets ball to initial position.
+    reset_platform(self):
+        Resets platform to initial position.
+    """
+
     def __init__(
         self,
         difficulty_parameters: DifficultyParameters,
@@ -97,6 +141,7 @@ class Level:
         self.reset_platform()
 
     def reset_ball(self):
+        """Resets ball to initial position."""
         self.ball = _make_ball(
             self._difficulty_parameters.ball_velocity,
             self._difficulty_parameters.ball_gravity,
@@ -105,6 +150,7 @@ class Level:
         )
 
     def reset_platform(self):
+        """Resets platform to initial position."""
         self.platform = _make_platform(
             self._difficulty_parameters.platform_width,
             self._difficulty_parameters.platform_velocity,
@@ -114,6 +160,12 @@ class Level:
 
 
 def read_level_from_json_file(filename: str) -> Union[Level, None]:
+    """
+    Load a level from a json file.
+    
+    Raises ValueError if json file is invalid.
+    Raises IOError if file cannot be opened.
+    """
     try:
         with open(filename) as file:
             try:
