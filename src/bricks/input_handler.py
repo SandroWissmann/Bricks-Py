@@ -1,3 +1,4 @@
+"""Module to handle key and events from user input."""
 from bricks.level import Level
 from bricks.game_objects.ball import Ball
 from bricks.game_objects.platform import Platform
@@ -20,6 +21,27 @@ from pygame.constants import (
 
 
 class InputHandler:
+    """
+    Class to get input from user and handle it.
+    
+    Attributes
+    ----------
+    is_paused: bool
+        Indicates if game is paused.
+    changed_pause_state: bool
+        Indicates if game changed its pause state in last cycle.
+    is_quit: bool
+        Indicates if quit game was requested
+    
+    Methods
+    -------
+    handle_input(self, level: Level, elapsed_time_in_ms: float)
+        Checks for events / pressed keys.
+        Handle pressed keys.
+
+
+    """
+
     class _Event(Enum):
         none = 0
         quit = 1
@@ -48,6 +70,23 @@ class InputHandler:
         return self._is_quit
 
     def handle_input(self, level: Level, elapsed_time_in_ms: float):
+        """
+        Checks for events / pressed keys:
+            quit - Quit was requested. e.g. from closing the window.
+            left - Indicate left as long as it is hold down.
+            right - Indicate right as long as it is hold down.
+            space - Space was pressed.
+            escape - Escape was pressed.
+            p - Key p was pressed.
+
+        Handles the events / pressed keys:
+            quit - Set state quit.
+            left - Move platform to the left, except it reached left wall.
+            right - Move platform to the right, except it reached right wall.
+            space - Set ball active.
+            escape - Set state quit.
+            p - Set/reset state pause.
+        """
         self._update_input_event()
         self._handle_event(self._input_event, elapsed_time_in_ms, level)
 
