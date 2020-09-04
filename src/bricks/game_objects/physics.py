@@ -655,11 +655,9 @@ def _intersects_from_bottom_with_multi_objects(
         _Intersection.BOTTOM_LEFT,
     ]
 
-    for object_intersection_pair in object_intersection_pairs:
-        intersection = object_intersection_pair[1]
-        if not intersection in valid_values:
-            return False
-    return True
+    return _object_intersection_pairs_contain_only_values_from_intersection_list(
+        valid_values, object_intersection_pairs
+    )
 
 
 def _object_intersection_pairs_contain_only_values_from_intersection_list(
