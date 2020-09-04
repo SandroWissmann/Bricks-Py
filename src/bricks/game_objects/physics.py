@@ -27,7 +27,6 @@ from typing import List
 from typing import Tuple
 from enum import Enum
 
-from random import uniform
 from numpy import deg2rad
 
 
@@ -853,10 +852,6 @@ def _is_smaller(angle: float, target_angle: float, delta: float) -> bool:
 
 def _is_bigger(angle: float, target_angle: float, delta: float) -> bool:
     return angle >= target_angle and angle < target_angle + delta
-
-
-def _random(minimum: float, maximum: float) -> float:
-    return uniform(minimum, maximum)
 
 
 def _clamp(minimum: float, x: float, maximum: float) -> float:
