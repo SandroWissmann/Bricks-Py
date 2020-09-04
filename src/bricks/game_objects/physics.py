@@ -683,7 +683,9 @@ def _reflect_from_collision_with_top(ball: Ball, game_object: GameObject):
     _put_before_intersects_with_bottom_y(ball, game_object)
 
 
-def _reflect_from_collision_with_top_relative_to_positon(ball, platform):
+def _reflect_from_collision_with_top_relative_to_positon(
+    ball: Ball, platform: Platform
+):
     assert ball.angle.quadrant != Quadrant.III
     assert ball.angle.quadrant != Quadrant.IV
 
