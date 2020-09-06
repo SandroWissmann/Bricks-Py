@@ -102,12 +102,14 @@ def _get_object_intersection_pairs(
     object_intersection_pairs = []
     for game_object in game_objects:
         intersection = _get_intersection(ball, game_object)
-        if intersection != _Intersection.NONE:
-            if isinstance(game_object, Brick):
-                if game_object.is_destroyed():
-                    continue
-                game_object.decrease_hitpoints()
-            object_intersection_pairs.append((game_object, intersection))
+        if intersection == _Intersection.NONE:
+            continue
+
+        if isinstance(game_object, Brick):
+            if game_object.is_destroyed():
+                continue
+            game_object.decrease_hitpoints()
+        object_intersection_pairs.append((game_object, intersection))
     return object_intersection_pairs
 
 
