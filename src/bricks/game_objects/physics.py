@@ -144,13 +144,13 @@ def _get_intersection(ball: Ball, obj: GameObject) -> _Intersection:
     if len(intersections) == 1:
         return intersections[0]
     if len(intersections) == 2:
-        if _interects_left(intersections):
+        if _intersects_left(intersections):
             return _Intersection.LEFT
-        if _interects_top(intersections):
+        if _intersects_top(intersections):
             return _Intersection.TOP
-        if _interects_right(intersections):
+        if _intersects_right(intersections):
             return _Intersection.RIGHT
-        if _interects_bottom(intersections):
+        if _intersects_bottom(intersections):
             return _Intersection.BOTTOM
     return _Intersection.NONE
 
@@ -191,28 +191,32 @@ def _top_right_intersects_with_bottom_left(
     return x_is_inside and y_is_inside
 
 
-def _interects_left(intersections: List[_Intersection]) -> bool:
+def _intersects_left(intersections: List[_Intersection]) -> bool:
+    assert len(intersections) == 2
     return all(
         x in intersections
         for x in [_Intersection.BOTTOM_LEFT, _Intersection.TOP_LEFT]
     )
 
 
-def _interects_top(intersections: List[_Intersection]) -> bool:
+def _intersects_top(intersections: List[_Intersection]) -> bool:
+    assert len(intersections) == 2
     return all(
         x in intersections
         for x in [_Intersection.TOP_LEFT, _Intersection.TOP_RIGHT]
     )
 
 
-def _interects_right(intersections: List[_Intersection]) -> bool:
+def _intersects_right(intersections: List[_Intersection]) -> bool:
+    assert len(intersections) == 2
     return all(
         x in intersections
         for x in [_Intersection.TOP_RIGHT, _Intersection.BOTTOM_RIGHT]
     )
 
 
-def _interects_bottom(intersections: List[_Intersection]) -> bool:
+def _intersects_bottom(intersections: List[_Intersection]) -> bool:
+    assert len(intersections) == 2
     return all(
         x in intersections
         for x in [_Intersection.BOTTOM_RIGHT, _Intersection.BOTTOM_LEFT]
