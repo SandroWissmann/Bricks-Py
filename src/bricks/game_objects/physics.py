@@ -72,8 +72,6 @@ def reflect_from_game_objects(
     object_intersection_pairs = _get_object_intersection_pairs(
         ball, game_objects
     )
-    if len(object_intersection_pairs) == 0:
-        return []
     if len(object_intersection_pairs) == 1:
         _reflect_from_single_object(
             ball=ball,
