@@ -277,18 +277,6 @@ def _reflect_from_multiple_objects(
 ):
     assert len(object_intersection_pairs) > 1
 
-    if len(object_intersection_pairs) == 2:
-        if _reflect_from_two_objects_in_corner(
-            ball, object_intersection_pairs
-        ):
-            return
-
-    if len(object_intersection_pairs) == 3:
-        if _reflect_from_three_objects_in_corner(
-            ball, object_intersection_pairs
-        ):
-            return
-
     if _intersects_from_left_with_multi_objects(object_intersection_pairs):
         _reflect_from_collision_with_left(
             ball, object_intersection_pairs[0][0]
@@ -303,6 +291,18 @@ def _reflect_from_multiple_objects(
         _reflect_from_collision_with_bottom(
             ball, object_intersection_pairs[0][0]
         )
+
+    if len(object_intersection_pairs) == 2:
+        if _reflect_from_two_objects_in_corner(
+            ball, object_intersection_pairs
+        ):
+            return
+
+    if len(object_intersection_pairs) == 3:
+        if _reflect_from_three_objects_in_corner(
+            ball, object_intersection_pairs
+        ):
+            return
 
 
 def _reflect_from_two_objects_in_corner(
