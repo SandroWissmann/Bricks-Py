@@ -160,7 +160,7 @@ If you want different sizes, you have to change it in all the `.lvl` files.
     ]
   ```
 
-Same as Bricks. The only difference is the missing `HP` specification.
+Same as Bricks. The only difference is the missing `hitpoints` specification.
 
 ## License
 
