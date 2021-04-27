@@ -51,7 +51,7 @@ See also the [requirments.txt](https://github.com/SandroWissmann/Bricks-Py/blob/
 
 ### Running the game
 
-1. In root folder activate virtualenv with: `Source .venv/bin activate`
+1. In root folder activate virtualenv with: `source .venv/bin/activate`
 2. Run game: `python3 src/bricks/app.py`
 
 ### Running the tests
